@@ -1,8 +1,10 @@
 package org.j2overhead.m1ke;
 
+import org.j2overhead.m1ke.model.Branch;
 import org.j2overhead.m1ke.model.Repository;
 
 import java.io.File;
+import java.util.ArrayList;
 
 interface RepositoryService {
 
@@ -12,6 +14,9 @@ interface RepositoryService {
         return null;
     }
 
-    default void save() {
-    }
+    void save(File path, String targetPath);
+
+    void createDefault(File path);
+
+    ArrayList<Branch> scan(String path);
 }
