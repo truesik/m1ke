@@ -1,12 +1,13 @@
 package org.j2overhead.m1ke.Utils;
 
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.security.DigestInputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class FileUtils {
-
     public static boolean compareTwoFiles(File oldFile, File newFile) {
         try {
             FileInputStream oldFileInputStream = new FileInputStream(oldFile);
@@ -22,5 +23,18 @@ public class FileUtils {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public static boolean compareTwoFilesByHash(File oldFile, File newFile) {
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+            InputStream oldFileInputStream = Files.newInputStream(Paths.get(oldFile.getPath()));
+            InputStream newFileInputStream = Files.newInputStream(Paths.get(newFile.getPath()));
+            DigestInputStream oldFileDigestInputStream = new DigestInputStream(oldFileInputStream, messageDigest);
+            DigestInputStream newFileDigestInputStream = new DigestInputStream(newFileInputStream, messageDigest);
+            messageDigest.digest();
+        } catch (NoSuchAlgorithmException | IOException e) {
+            e.printStackTrace();
+        }
     }
 }
