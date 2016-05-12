@@ -65,21 +65,18 @@ public class M1keRunner {
 //                    -m команда сохранить с комментарием
 
         } else if ("create-branch".equals(args[0])) {
-
+                branchService.save(args[1]);
 //            Создать ветку (чтобы был не master к примеру):
 //            m1ke create-branch someBranchName
 
-        } else if ("create-branch".equals(args[0])) {
-
+        } else if ("get-branch".equals(args[0])) {
+                branchService.get(args[1]);
 //            Выбрать ветку:
 //            m1ke get-branch someBranchName
 //            Когда вы выбираете ветку - вы автоматически подтягиваете изменения которые вы там же и сохранили с помощью m1ke save
 //            Если вы переходите на другую ветку, но вы уже сделали какие то изменения, то вы эти изменения теряете.
-
-        } else if ("get-branch".equals(args[0])) {
-
         } else if ("remove-branch".equals(args[0])) {
-
+                branchService.remove(args[1]);
         } else if ("quit".equals(args[0])) {
             System.out.println("Cya");
             System.exit(0);
