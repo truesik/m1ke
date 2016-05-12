@@ -6,6 +6,8 @@ import java.nio.file.Paths;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FileUtils {
     public static boolean compareTwoFiles(File oldFile, File newFile) {
@@ -36,5 +38,19 @@ public class FileUtils {
         } catch (NoSuchAlgorithmException | IOException e) {
             e.printStackTrace();
         }
+        return false;
+    }
+
+    public static List<File> getFilesFromFolder(File pathToFolder) {
+        List<File> fileList = new ArrayList<>();
+        File[] files = pathToFolder.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file.isFile()) {
+                    fileList.add(file);
+                }
+            }
+        }
+        return fileList;
     }
 }

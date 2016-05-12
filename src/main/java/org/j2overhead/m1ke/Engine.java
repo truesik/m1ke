@@ -1,11 +1,11 @@
 package org.j2overhead.m1ke;
 
-import java.io.*;
-import java.nio.file.CopyOption;
+import org.j2overhead.m1ke.Utils.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
@@ -26,21 +26,8 @@ public class Engine {
         }
     }
 
-    public List<File> getFilesFromFolder(File pathToFolder) {
-        List<File> fileList = new ArrayList<>();
-        File[] files = pathToFolder.listFiles();
-        if (files != null) {
-            for (File file : files) {
-                if (file.isFile()) {
-                    fileList.add(file);
-                }
-            }
-        }
-        return fileList;
-    }
-
     public void createMasterBranch() {
-        for (File file : getFilesFromFolder(path)) {
+        for (File file : FileUtils.getFilesFromFolder(path)) {
             try {
                 Files.copy(Paths.get(file.getPath()), Paths.get(path + DEFAULT_BRANCH), REPLACE_EXISTING);
             } catch (IOException e) {
