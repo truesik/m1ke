@@ -1,4 +1,4 @@
-package org.j2overhead.m1ke;
+package org.j2overhead.m1ke.Utils;
 
 public enum Commands {
     INIT,

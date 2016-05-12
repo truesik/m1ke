@@ -9,16 +9,13 @@ import java.nio.file.Paths;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
-public class Engine {
+public class RepositoryServiceImpl implements RepositoryService {
     private final static String DEFAULT_BRANCH = "/.m1ke/branches/master/";
-    private File path;
 
-    public Engine(File path) {
-
-        this.path = path;
+    public RepositoryServiceImpl(File path) {
     }
 
-    public void createProgramFolder(File pathToFolder) {
+    public void createFolder(File pathToFolder) {
         if (new File(pathToFolder + "/.m1ke/branches").mkdirs() && new File(pathToFolder + "./m1ke/system").mkdirs()) {
             System.out.println("Program folders is created");
         } else {
@@ -26,7 +23,7 @@ public class Engine {
         }
     }
 
-    public void createMasterBranch() {
+    public void createMasterBranch(File path) {
         for (File file : FileUtils.getFilesFromFolder(path)) {
             try {
                 Files.copy(Paths.get(file.getPath()), Paths.get(path + DEFAULT_BRANCH), REPLACE_EXISTING);
@@ -35,6 +32,4 @@ public class Engine {
             }
         }
     }
-
-
 }
