@@ -7,12 +7,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class M1keRunner {
+public class AppController {
 
     private static RepositoryService repositoryService;
     private static BranchService branchService;
 
-    public M1keRunner() {
+    public AppController() {
         repositoryService = new RepositoryServiceImpl();
         branchService = new BranchServiceImpl();
     }
