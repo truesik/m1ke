@@ -2,7 +2,6 @@ package ru.j2overhead.m1ke;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Engine {
@@ -19,10 +18,15 @@ public class Engine {
     }
 
     public List<File> getFilesFromFolder(File pathToFolder) {
+        List<File> fileList = new ArrayList<>();
         File[] files = pathToFolder.listFiles();
         if (files != null) {
-            return new ArrayList<>(Arrays.asList(files));
+            for (File file : files) {
+                if (file.isFile()) {
+                    fileList.add(file);
+                }
+            }
         }
-        return new ArrayList<>();
+        return fileList;
     }
 }
