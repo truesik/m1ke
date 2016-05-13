@@ -12,17 +12,13 @@ public class AppController {
     private static RepositoryService repositoryService;
     private static BranchService branchService;
 
-    public AppController() {
-        repositoryService = new RepositoryServiceImpl();
-        branchService = new BranchServiceImpl();
-    }
+
 
     public static void main(String[] args) {
-
         if (args == null || args.length < 1 || args[0] == null || args[0].isEmpty() || Objects.equals(args[0], "")) {
             System.out.println("bla bla bla wrong help");
         } else if ("init".equals(args[0])) {
-            init(args);
+            init();
             //Для того чтобы запустить m1ke нужно выполнить команду m1ke 'init"
         } else if ("integrate".equals(args[0])) {
 
@@ -65,7 +61,9 @@ public class AppController {
 //                    -m команда сохранить с комментарием
 
         } else if ("create-branch".equals(args[0])) {
+                init();
                 branchService.save(args[1]);
+                System.out.println("save " + args[1]);
 //            Создать ветку (чтобы был не master к примеру):
 //            m1ke create-branch someBranchName
 
@@ -85,8 +83,9 @@ public class AppController {
         }
     }
 
-    static void init(String[] args) {
-
+    static void init() {
+            repositoryService = new RepositoryServiceImpl();
+            branchService = new BranchServiceImpl();
         System.out.println("startup M1ke");
     }
 }
