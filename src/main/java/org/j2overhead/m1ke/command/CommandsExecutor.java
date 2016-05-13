@@ -1,8 +1,9 @@
-package org.j2overhead.m1ke.utils;
+package org.j2overhead.m1ke.command;
 
 import org.j2overhead.m1ke.model.Branch;
 import org.j2overhead.m1ke.service.BranchService;
 import org.j2overhead.m1ke.service.RepositoryService;
+import org.j2overhead.m1ke.utils.InitProperty;
 
 import java.io.File;
 import java.time.LocalDateTime;
@@ -17,25 +18,25 @@ public class CommandsExecutor {
         this.branchService = branchService;
     }
 
-    public void execute(String[] arg) {
-        switch (arg[0]) {
+    public void execute(String[] args) {
+        switch (args[0]) {
             case "init":
                 init();
                 break;
             case "integrate":
-                integrate(arg[1]);
+                integrate(args[1]);
                 break;
             case "create-branch":
-                createBranch(arg[1]);
+                createBranch(args[1]);
                 break;
             case "remove-branch":
-                removeBranch(arg[1]);
+                removeBranch(args[1]);
                 break;
             case "get-branch":
-                getBranch(arg[1]);
+                getBranch(args[1]);
                 break;
             case "save":
-                save(arg);
+                save(args);
                 break;
             case "quit":
                 quit();
