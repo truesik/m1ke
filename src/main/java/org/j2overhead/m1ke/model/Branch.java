@@ -41,4 +41,5 @@ public class Branch {
     public void setCommit(String commit) {
         this.commit = commit;
     }
+    
 }
