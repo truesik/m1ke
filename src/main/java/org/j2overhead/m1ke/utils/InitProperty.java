@@ -1,6 +1,8 @@
 package org.j2overhead.m1ke.utils;
 
 import java.io.*;
+import java.net.URL;
+import java.net.URLDecoder;
 import java.util.Properties;
 
 public class InitProperty {
@@ -26,7 +28,7 @@ public class InitProperty {
      */
     public boolean readInitStatus() {
         Properties properties = new Properties();
-        try (InputStream inputStream = new FileInputStream(INIT_PROPERTY)) {
+        try (InputStream inputStream = new FileInputStream(getProgramFolder() + File.separator + INIT_PROPERTY)) {
             properties.load(inputStream);
             if (properties.containsKey("INIT_STATUS")) {
                 return isInit(properties.getProperty("INIT_STATUS"));
@@ -44,7 +46,7 @@ public class InitProperty {
      */
     public void writeInitStatus(boolean init) {
         Properties properties = new Properties();
-        try (OutputStream outputStream = new FileOutputStream(INIT_PROPERTY)) {
+        try (OutputStream outputStream = new FileOutputStream(getProgramFolder() + File.separator + INIT_PROPERTY)) {
             properties.setProperty("INIT_STATUS", init ? "1" : "0");
             properties.store(outputStream, null);
         } catch (Exception e) {
@@ -56,7 +58,7 @@ public class InitProperty {
      * Создаем файл в котором храним состояние программы.
      */
     private void createInitStatusFile() {
-        File file = new File(INIT_PROPERTY);
+        File file = new File(getProgramFolder() + File.separator + INIT_PROPERTY);
         try {
             if (file.createNewFile()) {
                 writeInitStatus(true);
@@ -71,5 +73,17 @@ public class InitProperty {
 
     private boolean isInit(String init_status) {
         return init_status.equals("1");
+    }
+
+    private String getProgramFolder() {
+        URL url = InitProperty.class.getProtectionDomain().getCodeSource().getLocation();
+        String parentPath = null;
+        try {
+            String jarPath = URLDecoder.decode(url.getFile(), "UTF-8");
+            parentPath = new File(jarPath).getParentFile().getPath();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return parentPath;
     }
 }
