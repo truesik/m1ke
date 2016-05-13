@@ -19,6 +19,11 @@ public class InitProperty {
         createInitStatusFile();
     }
 
+    /**
+     * При m1ke <command> считываем состояние.
+     *
+     * @return boolean
+     */
     public boolean readInitStatus() {
         Properties properties = new Properties();
         try (InputStream inputStream = new FileInputStream(INIT_PROPERTY)) {
@@ -32,6 +37,11 @@ public class InitProperty {
         return false;
     }
 
+    /**
+     * При m1ke init записываем true, при m1ke quit - false.
+     *
+     * @param init boolean
+     */
     public void writeInitStatus(boolean init) {
         Properties properties = new Properties();
         try (OutputStream outputStream = new FileOutputStream(INIT_PROPERTY)) {
@@ -42,6 +52,9 @@ public class InitProperty {
         }
     }
 
+    /**
+     * Создаем файл в котором храним состояние программы.
+     */
     private void createInitStatusFile() {
         File file = new File(INIT_PROPERTY);
         try {
