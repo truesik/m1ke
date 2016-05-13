@@ -2,7 +2,6 @@ package org.j2overhead.m1ke.model;
 
 import java.io.File;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Branch {
