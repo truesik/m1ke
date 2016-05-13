@@ -8,13 +8,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 public class RepositoryServiceImpl implements RepositoryService {
     private final static String DEFAULT_BRANCH = "/.m1ke/branches/master/";
 
-    public void createFolder(File pathToFolder) {
+    public void createProgramFolders(File pathToFolder) {
         if (new File(pathToFolder + "/.m1ke/branches").mkdirs() && new File(pathToFolder + "./m1ke/system").mkdirs()) {
             System.out.println("Program folders is created");
         } else {
@@ -37,7 +38,22 @@ public class RepositoryServiceImpl implements RepositoryService {
     }
 
     @Override
-    public ArrayList<Branch> scan(String path) {
-        return null;
+    public List<Branch> scan(String path) {
+        List<Branch> branchList = new ArrayList<>();
+        List<File> branchesPath = FileUtils.getBranches(new File(path));
+//        List<File> fileList = FileUtils.getFilesFromFolder(new File(path));
+        for (File branchPath : branchesPath) {
+            Branch branch = new Branch();
+            branch.setName(getNameOfBranchFolder(branchPath));
+            branch.setFiles(FileUtils.getFilesFromFolder(branchPath));
+//            branch.set
+
+            branchList.add(branch);
+        }
+        return branchList;
+    }
+
+    private String getNameOfBranchFolder(File branchPath) {
+        return branchPath.getParent().substring(branchPath.getParent().lastIndexOf(File.separator) + 1);
     }
 }

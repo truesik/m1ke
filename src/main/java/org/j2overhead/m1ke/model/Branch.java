@@ -2,13 +2,14 @@ package org.j2overhead.m1ke.model;
 
 import java.io.File;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.List;
 
 public class Branch {
+    private String name;
     private String commit;
     private LocalDateTime lastUpdate;
-    private ArrayList<File> files;
-    private ArrayList<File> folders;
+    private List<File> files;
+    private List<File> folders;
 
     public LocalDateTime getLastUpdate() {
         return lastUpdate;
@@ -18,19 +19,19 @@ public class Branch {
         this.lastUpdate = lastUpdate;
     }
 
-    public ArrayList<File> getFiles() {
+    public List<File> getFiles() {
         return files;
     }
 
-    public void setFiles(ArrayList<File> files) {
+    public void setFiles(List<File> files) {
         this.files = files;
     }
 
-    public ArrayList<File> getFolders() {
+    public List<File> getFolders() {
         return folders;
     }
 
-    public void setFolders(ArrayList<File> folders) {
+    public void setFolders(List<File> folders) {
         this.folders = folders;
     }
 
@@ -41,5 +42,12 @@ public class Branch {
     public void setCommit(String commit) {
         this.commit = commit;
     }
-    
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
