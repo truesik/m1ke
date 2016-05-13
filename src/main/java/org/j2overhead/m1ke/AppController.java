@@ -12,13 +12,10 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class AppController {
-
     private static RepositoryService repositoryService;
     private static BranchService branchService;
 
-
-
-    public static void main(String[] args) {
+    private static void doCommand(String[] args) {
         if (args == null || args.length < 1 || args[0] == null || args[0].isEmpty() || Objects.equals(args[0], "")) {
             System.out.println("bla bla bla wrong help");
         } else if ("init".equals(args[0])) {
@@ -87,9 +84,13 @@ public class AppController {
         }
     }
 
+    public static void main(String[] args) {
+        repositoryService = new RepositoryServiceImpl();
+        branchService = new BranchServiceImpl();
+        doCommand(args);
+    }
+
     private static void init() {
-            repositoryService = new RepositoryServiceImpl();
-            branchService = new BranchServiceImpl();
         System.out.println("startup M1ke");
     }
 }
