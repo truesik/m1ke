@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class Branch {
+    private String name;
     private String commit;
     private LocalDateTime lastUpdate;
     private List<File> files;
@@ -41,5 +42,12 @@ public class Branch {
     public void setCommit(String commit) {
         this.commit = commit;
     }
-    
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
