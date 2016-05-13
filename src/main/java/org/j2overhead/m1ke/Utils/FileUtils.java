@@ -1,4 +1,4 @@
-package org.j2overhead.m1ke.Utils;
+package org.j2overhead.m1ke.utils;
 
 import java.io.*;
 import java.nio.file.Files;
