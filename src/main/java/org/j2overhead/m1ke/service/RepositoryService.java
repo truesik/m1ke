@@ -4,7 +4,7 @@ import org.j2overhead.m1ke.model.Branch;
 import org.j2overhead.m1ke.model.Repository;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.List;
 
 public interface RepositoryService {
 
@@ -18,5 +18,5 @@ public interface RepositoryService {
 
     void createDefault(File path);
 
-    ArrayList<Branch> scan(String path);
+    List<Branch> scan(String path);
 }
