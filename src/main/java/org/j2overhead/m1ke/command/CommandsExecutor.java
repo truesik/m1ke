@@ -5,10 +5,9 @@ import org.j2overhead.m1ke.model.Repository;
 import org.j2overhead.m1ke.service.BranchService;
 import org.j2overhead.m1ke.service.RepositoryService;
 import org.j2overhead.m1ke.utils.InitProperty;
+import org.j2overhead.m1ke.utils.LastOpenedBranchPropertyService;
 
 import java.io.File;
-import java.time.LocalDateTime;
-import java.util.List;
 
 public class CommandsExecutor {
     private final RepositoryService repositoryService;
@@ -66,21 +65,25 @@ public class CommandsExecutor {
 //            После этой команды m1ke открывает конкретную юзер ветку (branch) которая там сохранилась
 //             (если она там не одна, то открывается та ветка, в которой произошли последние изменения).
             if (!repository.getBranches().isEmpty()) {
-                //зарефакторить нахер эти лямбды, но потом :)
-                final LocalDateTime[] lastUpdate = {LocalDateTime.MIN};
-                repository.getBranches().forEach(branch -> {
-                    if (branch.getLastUpdate().isAfter(lastUpdate[0])) {
-                        lastUpdate[0] = branch.getLastUpdate();
-                    }
-                });
-                LocalDateTime lastUpdateTime = lastUpdate[0];
+                String nameOfLastOpenedBranch = LastOpenedBranchPropertyService.getInstance().readLastOpenedBranch(pathToFolder);
+                Branch lastOpenedBranch = repository.getBranchByName(nameOfLastOpenedBranch);
 
-                final Branch[] lastUpdateBranch = new Branch[1];
-                repository.getBranches().forEach(branch -> {
-                    if (branch.getLastUpdate().equals(lastUpdateTime)) {
-                        lastUpdateBranch[0] = branch;
-                    }
-                });
+
+                //зарефакторить нахер эти лямбды, но потом :)
+//                final LocalDateTime[] lastUpdate = {LocalDateTime.MIN};
+//                repository.getBranches().forEach(branch -> {
+//                    if (branch.getLastUpdate().isAfter(lastUpdate[0])) {
+//                        lastUpdate[0] = branch.getLastUpdate();
+//                    }
+//                });
+//                LocalDateTime lastUpdateTime = lastUpdate[0];
+
+//                final Branch[] lastUpdateBranch = new Branch[1];
+//                repository.getBranches().forEach(branch -> {
+//                    if (branch.getLastUpdate().equals(lastUpdateTime)) {
+//                        lastUpdateBranch[0] = branch;
+//                    }
+//                });
             } else {
                 //             Если в этой папке ничего никогда со стороны m1ke не запускалось то
                 // запускается первичная ветка master. Юзер должен об этом предупрежден сообщением.
