@@ -19,4 +19,9 @@ public class BranchServiceImpl implements BranchService {
     public Branch get(String arg) {
         return null;
     }
+
+    @Override
+    public void saveWithComment(String path, String comment) {
+
+    }
 }

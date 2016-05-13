@@ -8,4 +8,6 @@ public interface BranchService {
     void remove(String arg);
 
     Branch get(String arg);
+
+    void saveWithComment(String path, String comment);
 }

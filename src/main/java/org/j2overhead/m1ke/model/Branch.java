@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Branch {
+    private String commit;
     private LocalDateTime lastUpdate;
     private ArrayList<File> files;
     private ArrayList<File> folders;
@@ -31,5 +32,13 @@ public class Branch {
 
     public void setFolders(ArrayList<File> folders) {
         this.folders = folders;
+    }
+
+    public String getCommit() {
+        return commit;
+    }
+
+    public void setCommit(String commit) {
+        this.commit = commit;
     }
 }

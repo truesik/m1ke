@@ -53,7 +53,7 @@ public class AppController {
             }
 
         } else if ("-m".equals(args[0])) {
-
+              branchService.saveWithComment(args[1], args[2]);
 //            Допустим у нас в этой папке есть текстовый файл, который вы только что создали. К примеру, он называется 1.txt
 //            1.txt
 //            Hello!
