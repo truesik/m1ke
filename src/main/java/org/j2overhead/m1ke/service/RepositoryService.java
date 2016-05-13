@@ -1,4 +1,4 @@
-package org.j2overhead.m1ke;
+package org.j2overhead.m1ke.service;
 
 import org.j2overhead.m1ke.model.Branch;
 import org.j2overhead.m1ke.model.Repository;
@@ -6,7 +6,7 @@ import org.j2overhead.m1ke.model.Repository;
 import java.io.File;
 import java.util.ArrayList;
 
-interface RepositoryService {
+public interface RepositoryService {
 
     // scan folder and find Repository of branches,
     // if Repository is not exist - create new m1ke Repository and create new master branch

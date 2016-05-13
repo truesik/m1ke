@@ -1,6 +1,10 @@
 package org.j2overhead.m1ke;
 
 import org.j2overhead.m1ke.model.Branch;
+import org.j2overhead.m1ke.service.BranchService;
+import org.j2overhead.m1ke.service.BranchServiceImpl;
+import org.j2overhead.m1ke.service.RepositoryService;
+import org.j2overhead.m1ke.service.RepositoryServiceImpl;
 
 import java.io.File;
 import java.time.LocalDateTime;
@@ -83,7 +87,7 @@ public class AppController {
         }
     }
 
-    static void init() {
+    private static void init() {
             repositoryService = new RepositoryServiceImpl();
             branchService = new BranchServiceImpl();
         System.out.println("startup M1ke");
