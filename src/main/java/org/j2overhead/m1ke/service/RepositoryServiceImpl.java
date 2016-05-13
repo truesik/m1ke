@@ -1,6 +1,6 @@
 package org.j2overhead.m1ke.service;
 
-import org.j2overhead.m1ke.Utils.FileUtils;
+import org.j2overhead.m1ke.utils.FileUtils;
 import org.j2overhead.m1ke.model.Branch;
 
 import java.io.File;
