@@ -1,15 +1,16 @@
 package org.j2overhead.m1ke.command;
 
 import org.j2overhead.m1ke.model.Branch;
-import org.j2overhead.m1ke.service.BranchService;
-import org.j2overhead.m1ke.service.BranchServiceImpl;
+import org.j2overhead.m1ke.model.Repository;
 import org.j2overhead.m1ke.service.RepositoryService;
-import org.j2overhead.m1ke.service.RepositoryServiceImpl;
 import org.j2overhead.m1ke.utils.FileUtils;
 import org.j2overhead.m1ke.utils.InitProperty;
 import org.j2overhead.m1ke.utils.LastOpenedBranchPropertyService;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.List;
 
 public class CommandsExecutor {
@@ -72,12 +73,12 @@ public class CommandsExecutor {
         if (isInit()) {
 //            К примеру у нас есть папка C:\project . Для того чтобы просканировать папку на файлы
 // и уже сделанные изменения нужно выполнить:  m1ke integrate %FOLDER_NAME%
-
+            Repository repository = new Repository();
           //  repository.setPath();
-
+            repository.setBranches(repositoryService.getBranchList(pathToFolder));
 //            После этой команды m1ke открывает конкретную юзер ветку (branch) которая там сохранилась
 //             (если она там не одна, то открывается та ветка, в которой произошли последние изменения).
-            if (!branchService.getBranches(pathToFolder).isEmpty()) {
+            if (!repository.getBranches().isEmpty()) {
                 String nameOfLastOpenedBranch = LastOpenedBranchPropertyService.getInstance().readLastOpenedBranch(pathToFolder);
                 Branch lastOpenedBranch = repository.getBranchByName(nameOfLastOpenedBranch);
                 repository.setLastOpenedBranch(lastOpenedBranch);
@@ -131,7 +132,7 @@ public class CommandsExecutor {
 
     private void getBranch(String name) {
         if (isInit()) {
-            repositoryService.getBranch(name, new Branch());
+//            repositoryService.getBranch(name);
 //            Выбрать ветку:
 //            m1ke get-branch someBranchName
 //            Когда вы выбираете ветку - вы автоматически подтягиваете изменения которые вы там же и сохранили с помощью m1ke saveBranch
