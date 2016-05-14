@@ -7,7 +7,8 @@ public class BranchServiceImpl implements BranchService {
 
     @Override
     public void save(String arg) {
-
+        String userDir = System.getProperty("user.dir");
+        System.out.println("Save " + userDir + " with comment: " + arg);
     }
 
     @Override
