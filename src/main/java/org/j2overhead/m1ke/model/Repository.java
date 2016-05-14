@@ -26,15 +26,6 @@ public class Repository {
         this.branches = branches;
     }
 
-    public Branch getBranchByName(String name) {
-        for (Branch branch : branches) {
-            if (branch.getName().equals(name)) {
-                return branch;
-            }
-        }
-        throw new RuntimeException("Branch doesn't exist.");
-    }
-
     public Branch getLastOpenedBranch() {
         return lastOpenedBranch;
     }
