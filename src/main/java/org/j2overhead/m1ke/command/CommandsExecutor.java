@@ -121,8 +121,7 @@ public class CommandsExecutor {
 
     private void save(String[] args) {
         if (isInit()) {
-            if (args[1] != null && args[1].equals("-m")) {
-                //?????????
+            if (args.length > 2 && args[1] != null && (args[1]).equals("-m")) {
                 branchService.save(args[2]);
                 System.out.println("save " + args[2]);
             } else {
