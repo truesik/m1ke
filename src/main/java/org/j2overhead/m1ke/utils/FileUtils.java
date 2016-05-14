@@ -8,23 +8,37 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
 
 public class FileUtils {
     public static boolean compareTwoFiles(File oldFile, File newFile) {
-        try {
-            FileInputStream oldFileInputStream = new FileInputStream(oldFile);
-            DataInputStream oldDataInputStream = new DataInputStream(oldFileInputStream);
-            FileInputStream newFileInputStream = new FileInputStream(newFile);
-            DataInputStream newDataInputStream = new DataInputStream(newFileInputStream);
-            byte oldFileBytes = oldDataInputStream.readByte();
-            byte newFilesBytes = newDataInputStream.readByte();
-            if (oldFileBytes == newFilesBytes) {
-                return true;
+        try (Scanner scannerFileOne = new Scanner(new FileInputStream(oldFile.getPath()));
+             Scanner scannerFileTwo = new Scanner(new FileInputStream(newFile.getPath()))){
+            while (scannerFileOne.hasNextLine()) {
+                String fileTwoNext = null;
+                String fileOneNext = null;
+                try {
+                    fileTwoNext = scannerFileTwo.nextLine();
+                    fileOneNext = scannerFileOne.nextLine();
+                } catch (NoSuchElementException e) {
+
+                    return false;
+                }
+
+                if (fileOneNext == null || fileTwoNext == null) {
+                    return false;
+                }
+                if (!(fileOneNext).equals(fileTwoNext)) {
+                    return false;
+                }
             }
+            scannerFileOne.close();
+            scannerFileTwo.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return false;
+        return true;
     }
 
     public static boolean compareTwoFilesByHash(File oldFile, File newFile) {
@@ -54,8 +68,23 @@ public class FileUtils {
         return fileList;
     }
 
+    /**
+     * Сканирует папку /.m1ke/branches и выдает список всех созданных веток (папок).
+     *
+     * @param file путь к /.m1ke/branches.
+     * @return Список папок (веток).
+     */
     public static List<File> getBranches(File file) {
-        return null;
+        List<File> branchList = new ArrayList<>();
+        File[] branches = file.listFiles();
+        if (branches != null) {
+            for (File branch : branches) {
+                if (branch.isDirectory()) {
+                    branchList.add(branch);
+                }
+            }
+        }
+        return branchList;
     }
 
     public static void saveFileTree(String comment) {
@@ -73,6 +102,7 @@ public class FileUtils {
             }
 
             private PathMatcher matcher;
+
             private MyFileFindVisitor(String pattern) {
                 try {
                     matcher = FileSystems.getDefault().getPathMatcher(pattern);
@@ -102,5 +132,21 @@ public class FileUtils {
             e.printStackTrace();
         }
         System.out.println("Save " + userDir + (comment.equals("") ? "" : " with comment: " + comment));
+    }
+
+    public static void deleteFiles(String path) {
+        File file = new File(path);
+        File[] files = file.listFiles();
+        if (files != null) {
+            for (File file1 : files) {
+                if (file1.isFile()) {
+                    try {
+                        Files.delete(Paths.get(file1.getPath()));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
     }
 }

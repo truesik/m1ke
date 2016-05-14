@@ -5,8 +5,10 @@ import java.util.List;
 
 public class Repository {
     // path to m1ke repository
-    Path path;
-    List<Branch> branches;
+    private Path path;
+    private List<Branch> branches;
+    private Branch lastOpenedBranch;
+
 
     public Path getPath() {
         return path;
@@ -31,5 +33,13 @@ public class Repository {
             }
         }
         throw new RuntimeException("Branch doesn't exist.");
+    }
+
+    public Branch getLastOpenedBranch() {
+        return lastOpenedBranch;
+    }
+
+    public void setLastOpenedBranch(Branch lastOpenedBranch) {
+        this.lastOpenedBranch = lastOpenedBranch;
     }
 }

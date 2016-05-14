@@ -8,15 +8,23 @@ import java.util.List;
 
 public interface RepositoryService {
 
-    // scan folder and find Repository of branches,
+    // getBranchList folder and find Repository of branches,
     // if Repository is not exist - create new m1ke Repository and create new master branch
     default Repository integrate(File file) {
         return null;
     }
 
-    void save(File path, String targetPath);
+    void saveBranch(File path, String targetPath);
 
-    void createDefault(File path);
+    void createDefaultBranch(File path);
 
-    List<Branch> scan(String path);
+    List<Branch> getBranchList(String path);
+
+    void getBranch(String path, Branch branch);
+
+    void createBranch(String name);
+
+    void removeBranch(String nameOfBranch);
+
+    void saveChangesToBranch(String s);
 }
