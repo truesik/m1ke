@@ -8,5 +8,5 @@ public interface BranchService {
 
     List<Branch> getBranches(String pathToFolder);
 
-    Branch getBranchByName(String name);
+    Branch getBranchByName(String name, String pathToFolder);
 }

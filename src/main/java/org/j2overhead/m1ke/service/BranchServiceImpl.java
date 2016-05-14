@@ -13,10 +13,8 @@ import static org.j2overhead.m1ke.utils.FileUtils.DEFAULT_FOLDER;
 public class BranchServiceImpl implements BranchService {
 
     private static BranchService instance;
-    private RepositoryService repositoryService;
 
     private BranchServiceImpl() {
-        this.repositoryService = RepositoryServiceImpl.getInstance();
     }
 
     public static BranchService getInstance() {
@@ -39,8 +37,8 @@ public class BranchServiceImpl implements BranchService {
         return branchList;
     }
 
-    public Branch getBranchByName(String name) {
-        for (Branch branch : getBranches(name)) {
+    public Branch getBranchByName(String name, String pathToFolder) {
+        for (Branch branch : getBranches(pathToFolder)) {
             if (branch.getName().equals(name)) {
                 return branch;
             }
