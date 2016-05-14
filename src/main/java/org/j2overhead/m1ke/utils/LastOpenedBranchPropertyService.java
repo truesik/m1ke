@@ -21,7 +21,7 @@ public class LastOpenedBranchPropertyService {
 
     public String readLastOpenedBranch(String pathOfIntegratedFolder) {
         Properties properties = new Properties();
-        try (InputStream inputStream = new FileInputStream(pathOfIntegratedFolder + File.separator + SYSTEM_PATH + LAST_OPENED_BRANCH)) {
+        try (InputStream inputStream = new FileInputStream(pathOfIntegratedFolder + File.separator + SYSTEM_PATH + File.separator + LAST_OPENED_BRANCH)) {
             properties.load(inputStream);
             if (properties.containsKey("LAST_OPENED_BRANCH")) {
                 return properties.getProperty("LAST_OPENED_BRANCH");

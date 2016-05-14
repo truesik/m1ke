@@ -1,5 +1,6 @@
 package org.j2overhead.m1ke.service;
 
+import org.j2overhead.m1ke.model.Repository;
 import org.j2overhead.m1ke.utils.FileUtils;
 import org.j2overhead.m1ke.model.Branch;
 
@@ -13,47 +14,95 @@ import java.util.List;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 public class RepositoryServiceImpl implements RepositoryService {
-    private final static String DEFAULT_BRANCH = "/.m1ke/branches/master/";
+    private final static String DEFAULT_FOLDER = "/.m1ke";
+    private final static String DEFAULT_BRANCH = "/master";
+    private final static String DEFAULT_BRANCHES_FOLDER = "/branches";
+    private final static String DEFAULT_SYSTEM_FOLDER = "/system";
 
     public void createProgramFolders(File pathToFolder) {
-        if (new File(pathToFolder + "/.m1ke/branches").mkdirs() && new File(pathToFolder + "./m1ke/system").mkdirs()) {
+        if (new File(pathToFolder + DEFAULT_FOLDER + DEFAULT_BRANCHES_FOLDER).mkdirs() && new File(pathToFolder + DEFAULT_FOLDER + DEFAULT_SYSTEM_FOLDER).mkdirs()) {
             System.out.println("Program folders is created");
         } else {
             System.out.println("Failed to create folders");
         }
     }
 
-    public void save(File path, String targetPath) {
-        for (File file : FileUtils.getFilesFromFolder(path)) {
-            try {
-                Files.copy(Paths.get(file.getPath()), Paths.get(path + targetPath), REPLACE_EXISTING);
-            } catch (IOException e) {
-                e.printStackTrace();
+    @Override
+    public Repository integrate(File file) {
+        return null;
+    }
+
+    public void saveBranch(File path, String targetPath) {
+        if (new File(path.getPath() + targetPath).mkdir()) {
+            for (File file : FileUtils.getFilesFromFolder(path)) {
+                try {
+                    String name = file.getName();
+                    Files.copy(Paths.get(file.getPath()), Paths.get(path + targetPath + File.separator + name), REPLACE_EXISTING);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
+        } else {
+            System.out.println("не робит");
         }
     }
 
-    public void createDefault(File path) {
-        save(path, DEFAULT_BRANCH);
+
+    public void createDefaultBranch(File path) {
+        createProgramFolders(path);
+        saveBranch(path, DEFAULT_FOLDER + DEFAULT_BRANCHES_FOLDER + DEFAULT_BRANCH);
     }
 
     @Override
-    public List<Branch> scan(String path) {
+    public List<Branch> getBranchList(String path) {
         List<Branch> branchList = new ArrayList<>();
-        List<File> branchesPath = FileUtils.getBranches(new File(path));
+        List<File> branchesPath = FileUtils.getBranches(new File(path + DEFAULT_FOLDER + DEFAULT_BRANCHES_FOLDER));
 //        List<File> fileList = FileUtils.getFilesFromFolder(new File(path));
         for (File branchPath : branchesPath) {
             Branch branch = new Branch();
-            branch.setName(getNameOfBranchFolder(branchPath));
+            branch.setName(branchPath.getName());
             branch.setFiles(FileUtils.getFilesFromFolder(branchPath));
-//            branch.set
+            //            branch.set
 
             branchList.add(branch);
         }
         return branchList;
     }
 
-    private String getNameOfBranchFolder(File branchPath) {
-        return branchPath.getParent().substring(branchPath.getParent().lastIndexOf(File.separator) + 1);
+    @Override
+    public void getBranch(String path, Branch branch) {
+        FileUtils.deleteFiles(path);
+        for (File file : branch.getFiles()) {
+            copyFiles(file, path);
+        }
     }
+
+    @Override
+    public void createBranch(String name) {
+
+    }
+
+    @Override
+    public void removeBranch(String nameOfBranch) {
+
+    }
+
+    @Override
+    public void getBranch(String name) {
+
+    }
+
+    @Override
+    public void saveChangesToBranch(String s) {
+
+    }
+
+    private void copyFiles(File file, String path) {
+        try {
+            Files.copy(Paths.get(file.getPath()), Paths.get(path + file.getName()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

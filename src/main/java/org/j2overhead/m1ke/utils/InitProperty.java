@@ -62,9 +62,9 @@ public class InitProperty {
         try {
             if (file.createNewFile()) {
                 writeInitStatus(true);
-                System.out.println("File is created");
+                System.out.println("Init status file is created");
             } else {
-                System.out.println("File already exists");
+                System.out.println("Init status file already exists");
             }
         } catch (IOException e) {
             e.printStackTrace();
