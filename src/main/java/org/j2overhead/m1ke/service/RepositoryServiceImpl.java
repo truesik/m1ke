@@ -68,7 +68,9 @@ public class RepositoryServiceImpl implements RepositoryService {
 
     @Override
     public void createBranch(String name) {
-
+        // проверить есть ли ветка с таким же названием
+        // скопировать все файлы из открытой в данный момент ветки в новоую ветку
+        // перезаписать last-opened-branch.property
     }
 
     @Override
