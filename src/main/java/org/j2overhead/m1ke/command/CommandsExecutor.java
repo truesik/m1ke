@@ -1,17 +1,11 @@
 package org.j2overhead.m1ke.command;
 
-import org.j2overhead.m1ke.model.Branch;
-import org.j2overhead.m1ke.model.Repository;
+import org.j2overhead.m1ke.service.BranchService;
+import org.j2overhead.m1ke.service.BranchServiceImpl;
 import org.j2overhead.m1ke.service.RepositoryService;
+import org.j2overhead.m1ke.service.RepositoryServiceImpl;
 import org.j2overhead.m1ke.utils.FileUtils;
 import org.j2overhead.m1ke.utils.InitProperty;
-import org.j2overhead.m1ke.utils.LastOpenedBranchPropertyService;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.List;
 
 public class CommandsExecutor {
     private static CommandsExecutor instance;
@@ -46,7 +40,7 @@ public class CommandsExecutor {
                     removeBranch(args[1]);
                     break;
                 case "get-branch":
-                    getBranch(args[1]);
+                    branchRewritePerository(args[1]);
                     break;
                 case "save":
                     save(args);
@@ -69,58 +63,21 @@ public class CommandsExecutor {
         System.out.println("m1ke initiated");
     }
 
-    private void integrate(String pathToFolder) {
-        if (isInit()) {
 //            К примеру у нас есть папка C:\project . Для того чтобы просканировать папку на файлы
-// и уже сделанные изменения нужно выполнить:  m1ke integrate %FOLDER_NAME%
-            Repository repository = new Repository();
-          //  repository.setPath();
-            repository.setBranches(repositoryService.getBranchList(pathToFolder));
+//            и уже сделанные изменения нужно выполнить:  m1ke integrate %FOLDER_NAME%
 //            После этой команды m1ke открывает конкретную юзер ветку (branch) которая там сохранилась
-//             (если она там не одна, то открывается та ветка, в которой произошли последние изменения).
-            if (!repository.getBranches().isEmpty()) {
-                String nameOfLastOpenedBranch = LastOpenedBranchPropertyService.getInstance().readLastOpenedBranch(pathToFolder);
-                Branch lastOpenedBranch = repository.getBranchByName(nameOfLastOpenedBranch);
-                repository.setLastOpenedBranch(lastOpenedBranch);
-                List<File> files = lastOpenedBranch.getFiles();
-                List<File> filesFromFolder = FileUtils.getFilesFromFolder(new File(pathToFolder));
-                for (File file : files) {
-                    for (File file1 : filesFromFolder) {
-                        if (!FileUtils.compareTwoFiles(file, file1)) {
-                            System.out.println("different");
-                            System.out.println("delete your bullshit? y/n");
-                            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-                            try {
-                                String m = reader.readLine();
-                                if (m.equals("y")) {
-                                    repositoryService.getBranch(pathToFolder, lastOpenedBranch);
-                                }
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-
-                        } else {
-                            System.out.println("same");
-                        }
-                    }
-                }
-            } else {
-                //             Если в этой папке ничего никогда со стороны m1ke не запускалось то
-                // запускается первичная ветка master. Юзер должен об этом предупрежден сообщением.
-                repositoryService.createDefaultBranch(new File(pathToFolder));
-                System.out.println("" +
-                        "m1ke found there was no branch here\n" +
-                        "'master' branch choosed");
-            }
-
+//            (если она там не одна, то открывается та ветка, в которой произошли последние изменения).
+    private void integrate(String pathToUserFolder) {
+        if (isInit()) {
+            repositoryService.integrate(pathToUserFolder);
         }
     }
 
+//            Создать ветку (чтобы был не master к примеру):
+//            m1ke create-branch someBranchName
     private void createBranch(String name) {
         if (isInit()) {
             repositoryService.createBranch(name);
-//            Создать ветку (чтобы был не master к примеру):
-//            m1ke create-branch someBranchName
         }
     }
 
@@ -129,14 +86,13 @@ public class CommandsExecutor {
             repositoryService.removeBranch(nameOfBranch);
         }
     }
-
-    private void getBranch(String name) {
-        if (isInit()) {
-//            repositoryService.getBranch(name);
 //            Выбрать ветку:
 //            m1ke get-branch someBranchName
 //            Когда вы выбираете ветку - вы автоматически подтягиваете изменения которые вы там же и сохранили с помощью m1ke saveBranch
 //            Если вы переходите на другую ветку, но вы уже сделали какие то изменения, то вы эти изменения теряете.
+    private void branchRewritePerository(String name) {
+        if (isInit()) {
+            repositoryService.branchRewritePerository(FileUtils.CURRENT_RUNTIME_USER_DIR, branchService.getBranchByName(name, FileUtils.CURRENT_RUNTIME_USER_DIR));
         }
     }
 
