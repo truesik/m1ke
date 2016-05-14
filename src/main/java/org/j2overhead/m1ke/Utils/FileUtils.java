@@ -85,7 +85,11 @@ public class FileUtils {
             private void find(Path path) {
                 Path name = path.getFileName();
                 if (matcher.matches(name)) {
-                    System.out.println("Matching file:" + path.getFileName());
+                    if (Files.isDirectory(path)) {
+                        System.out.println("Save directory:" + path.getFileName());
+                    } else {
+                        System.out.println("Save file:" + path.getFileName());
+                    }
                 }
             }
         }
