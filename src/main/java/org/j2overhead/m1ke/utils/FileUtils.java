@@ -12,6 +12,11 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class FileUtils {
+    public final static String DEFAULT_FOLDER = "/.m1ke";
+    public final static String DEFAULT_BRANCH = "/master";
+    public final static String DEFAULT_BRANCHES_FOLDER = "/branches";
+    public final static String DEFAULT_SYSTEM_FOLDER = "/system";
+
     public static boolean compareTwoFiles(File oldFile, File newFile) {
         try (Scanner scannerFileOne = new Scanner(new FileInputStream(oldFile.getPath()));
              Scanner scannerFileTwo = new Scanner(new FileInputStream(newFile.getPath()))){
@@ -74,7 +79,7 @@ public class FileUtils {
      * @param file путь к /.m1ke/branches.
      * @return Список папок (веток).
      */
-    public static List<File> getBranches(File file) {
+    public static List<File> getFolders(File file) {
         List<File> branchList = new ArrayList<>();
         File[] branches = file.listFiles();
         if (branches != null) {
@@ -147,6 +152,14 @@ public class FileUtils {
                     }
                 }
             }
+        }
+    }
+
+    public static void copyFiles(File file, String path) {
+        try {
+            Files.copy(Paths.get(file.getPath()), Paths.get(path + file.getName()));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
