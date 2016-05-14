@@ -92,7 +92,7 @@ public class CommandsExecutor {
 //            Если вы переходите на другую ветку, но вы уже сделали какие то изменения, то вы эти изменения теряете.
     private void branchRewritePerository(String name) {
         if (isInit()) {
-            repositoryService.branchRewritePerository(FileUtils.CURRENT_RUNTIME_USER_DIR, branchService.getBranchByName(name, FileUtils.CURRENT_RUNTIME_USER_DIR));
+            repositoryService.branchRewriteRepository(FileUtils.CURRENT_RUNTIME_USER_DIR, branchService.getBranchByName(name, FileUtils.CURRENT_RUNTIME_USER_DIR));
         }
     }
 
