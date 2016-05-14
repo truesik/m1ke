@@ -59,7 +59,7 @@ public class RepositoryServiceImpl implements RepositoryService {
         saveBranch(path, DEFAULT_FOLDER + DEFAULT_BRANCHES_FOLDER + DEFAULT_BRANCH);
     }
     @Override
-    public void branchRewritePerository(String path, Branch branch) {
+    public void branchRewriteRepository(String path, Branch branch) {
         FileUtils.deleteFiles(path);
         for (File file : branch.getFiles()) {
             FileUtils.copyFiles(file, path);
@@ -75,7 +75,8 @@ public class RepositoryServiceImpl implements RepositoryService {
 
     @Override
     public void removeBranch(String nameOfBranch) {
-
+        // проверить чтобы ветка которую хотим удалить не являлась открытой в данный момент
+        // удалить
     }
 
     @Override
@@ -99,7 +100,7 @@ public class RepositoryServiceImpl implements RepositoryService {
                         try {
                             String m = reader.readLine();
                             if (m.equals("y")) {
-                                branchRewritePerository(pathToFolder, lastOpenedBranch);
+                                branchRewriteRepository(pathToFolder, lastOpenedBranch);
                             }
                         } catch (IOException e) {
                             e.printStackTrace();
