@@ -61,44 +61,39 @@ public class FileUtils {
     public static void saveFileTree(String comment) {
         String userDir = System.getProperty("user.dir");
         class MyFileFindVisitor extends SimpleFileVisitor<Path> {
-            private PathMatcher matcher;
 
-            public MyFileFindVisitor(String pattern) {
+            public FileVisitResult visitFile(Path path, BasicFileAttributes fileAttributes) {
+                find(path);
+                return FileVisitResult.CONTINUE;
+            }
+
+            public FileVisitResult preVisitDirectory(Path path, BasicFileAttributes fileAttributes) {
+                find(path);
+                return FileVisitResult.CONTINUE;
+            }
+
+            private PathMatcher matcher;
+            private MyFileFindVisitor(String pattern) {
                 try {
                     matcher = FileSystems.getDefault().getPathMatcher(pattern);
                 } catch (IllegalArgumentException iae) {
-                    System.err
-                            .println("Invalid pattern; did you forget to prefix \"glob:\" or \"regex:\"?");
+                    System.err.println("Invalid pattern; did you forget to prefix \"glob:\" or \"regex:\"?");
                     System.exit(1);
                 }
-
-            }
-
-            public FileVisitResult visitFile(Path path,
-                                             BasicFileAttributes fileAttributes) {
-                find(path);
-                return FileVisitResult.CONTINUE;
             }
 
             private void find(Path path) {
                 Path name = path.getFileName();
-                if (matcher.matches(name))
+                if (matcher.matches(name)) {
                     System.out.println("Matching file:" + path.getFileName());
+                }
             }
-
-            public FileVisitResult preVisitDirectory(Path path,
-                                                     BasicFileAttributes fileAttributes) {
-                find(path);
-                return FileVisitResult.CONTINUE;
-            }
-
-
         }
+
         try {
             String pattern = "glob:*";
             System.out.println("File list: ");
             Files.walkFileTree(Paths.get(userDir), new MyFileFindVisitor(pattern));
-
         } catch (IOException e) {
             e.printStackTrace();
         }
