@@ -58,8 +58,8 @@ public class CommandsExecutor {
 
     private void integrate(String pathToFolder) {
         if (isInit()) {
-//            К примеру у нас есть папка C:\project . Для того чтобы просканировать папку на файлы и уже сделанные изменения нужно выполнить:
-//             m1ke integrate %FOLDER_NAME%
+//            К примеру у нас есть папка C:\project . Для того чтобы просканировать папку на файлы
+// и уже сделанные изменения нужно выполнить:  m1ke integrate %FOLDER_NAME%
             Repository repository = new Repository();
             repository.setBranches(repositoryService.scan(pathToFolder));
 //            После этой команды m1ke открывает конкретную юзер ветку (branch) которая там сохранилась
@@ -87,9 +87,9 @@ public class CommandsExecutor {
             } else {
                 //             Если в этой папке ничего никогда со стороны m1ke не запускалось то
                 // запускается первичная ветка master. Юзер должен об этом предупрежден сообщением.
-                System.out.println("Bla bla no branches, create new branch");
                 repositoryService.createDefault(new File(pathToFolder));
-                // todo: test and checkout logic
+                System.out.println("m1ke found there was no branch here\n" +
+                        "'master' branch choosed");
             }
 
         }
@@ -97,6 +97,7 @@ public class CommandsExecutor {
 
     private void createBranch(String name) {
         if (isInit()) {
+
 //            Создать ветку (чтобы был не master к примеру):
 //            m1ke create-branch someBranchName
         }
