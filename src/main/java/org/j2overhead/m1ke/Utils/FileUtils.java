@@ -53,4 +53,8 @@ public class FileUtils {
         }
         return fileList;
     }
+
+    public static List<File> getBranches(File file) {
+        return null;
+    }
 }
