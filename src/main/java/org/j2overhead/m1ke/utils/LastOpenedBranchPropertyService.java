@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.Properties;
 
 public class LastOpenedBranchPropertyService {
-    private static final String SYSTEM_PATH = ".m1ke" + File.separator + "system";
+    private static final String REPOSITORY_SETTINGS_PATH = ".m1ke" + File.separator + "system";
     private static final String LAST_OPENED_BRANCH = "last-opened-branch.property";
 
     private static LastOpenedBranchPropertyService instance;
@@ -21,7 +21,7 @@ public class LastOpenedBranchPropertyService {
 
     public String readLastOpenedBranch(String pathOfIntegratedFolder) {
         Properties properties = new Properties();
-        try (InputStream inputStream = new FileInputStream(pathOfIntegratedFolder + File.separator + SYSTEM_PATH + File.separator + LAST_OPENED_BRANCH)) {
+        try (InputStream inputStream = new FileInputStream(pathOfIntegratedFolder + File.separator + REPOSITORY_SETTINGS_PATH + File.separator + LAST_OPENED_BRANCH)) {
             properties.load(inputStream);
             if (properties.containsKey("LAST_OPENED_BRANCH")) {
                 return properties.getProperty("LAST_OPENED_BRANCH");
@@ -34,7 +34,7 @@ public class LastOpenedBranchPropertyService {
 
     public void writeLastOpenedBranch(String name, String pathOfIntegratedFolder) {
         Properties properties = new Properties();
-        try (OutputStream outputStream = new FileOutputStream(pathOfIntegratedFolder + File.separator + SYSTEM_PATH + LAST_OPENED_BRANCH)) {
+        try (OutputStream outputStream = new FileOutputStream(pathOfIntegratedFolder + File.separator + REPOSITORY_SETTINGS_PATH + LAST_OPENED_BRANCH)) {
             properties.setProperty("LAST_OPENED_BRANCH", name);
             properties.store(outputStream, null);
         } catch (IOException e) {
@@ -43,7 +43,7 @@ public class LastOpenedBranchPropertyService {
     }
 
     private void createLastOpenedBranchFile(String pathOfIntegratedFolder) {
-        File file = new File(pathOfIntegratedFolder + File.separator + SYSTEM_PATH + LAST_OPENED_BRANCH);
+        File file = new File(pathOfIntegratedFolder + File.separator + REPOSITORY_SETTINGS_PATH + LAST_OPENED_BRANCH);
         try {
             if (file.createNewFile()) {
                 System.out.println("File is created");
