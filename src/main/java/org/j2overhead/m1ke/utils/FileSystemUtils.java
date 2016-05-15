@@ -157,4 +157,24 @@ public class FileSystemUtils {
             e.printStackTrace();
         }
     }
+
+    public static boolean createFolder(String path) {
+        try {
+            Files.createDirectory(Paths.get(path));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return Files.exists(Paths.get(path));
+    }
+
+    public static boolean createFile(String path) {
+        try {
+            Files.createFile(Paths.get(path));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return Files.exists(Paths.get(path));
+    }
 }
