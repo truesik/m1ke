@@ -3,6 +3,8 @@
 Thumbs.db
 ehthumbs.db
 
+/target
+
 # Folder config file
 Desktop.ini
 
