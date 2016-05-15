@@ -12,10 +12,11 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class FileSystemUtils {
+    public final static String SYSTEM_LINE_SEPARATOR = File.separator;
     public final static String DEFAULT_FOLDER = File.separator + ".m1ke";
     public final static String DEFAULT_BRANCH = File.separator + "master";
-    public final static String DEFAULT_BRANCHES_FOLDER = File.separator + "branches";
-    public final static String DEFAULT_SYSTEM_FOLDER = File.separator + "system";
+    public final static String DEFAULT_BRANCHES_FOLDER = SYSTEM_LINE_SEPARATOR + "branches";
+    public final static String DEFAULT_SYSTEM_FOLDER = SYSTEM_LINE_SEPARATOR + "system";
     public final static String CURRENT_RUNTIME_USER_DIR = System.getProperty("user.dir");
 
     public static boolean compareTwoFiles(File oldFile, File newFile) {

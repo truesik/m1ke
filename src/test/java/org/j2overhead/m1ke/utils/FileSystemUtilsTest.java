@@ -4,18 +4,15 @@ import org.apache.commons.io.FileUtils;
 import org.j2overhead.m1ke.TestData;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.Stopwatch;
-import org.junit.runner.Description;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 import static org.j2overhead.m1ke.TestData.*;
+import static org.j2overhead.m1ke.utils.FileSystemUtils.SYSTEM_LINE_SEPARATOR;
 
 
 public class FileSystemUtilsTest {
@@ -30,7 +27,7 @@ public class FileSystemUtilsTest {
         }
     }
 
-    @Rule
+    /*@Rule
     public Stopwatch stopwatch = new Stopwatch() {
         private void logInfo(Description description, long nanos) {
             LOG.info("\n+++ Test {} spent {} microseconds", description.getMethodName(), TimeUnit.NANOSECONDS.toMicros(nanos));
@@ -40,7 +37,7 @@ public class FileSystemUtilsTest {
         protected void finished(long nanos, Description description) {
             logInfo(description, nanos);
         }
-    };
+    };*/
 
     @Test
     public void testCreateFolder() {
@@ -72,16 +69,29 @@ public class FileSystemUtilsTest {
 
     @Test
     public void testCompareTwoFiles() {
-        String pathToSameCompareFile = "test2.txt";
-        File testFile = TestData.getTestFile();
-        createTestData(TEST_FILE_PATH, pathToSameCompareFile, TEST_DATA);
-        Assert.assertTrue(FileSystemUtils.compareTwoFiles(testFile, new File(TEST_FILE_PATH + SYSTEM_LINE_SEPARATOR + pathToSameCompareFile)));
+        String pathToAnotherCompareFile = "test2.txt";
+        File testFile = TestData.getTestFileWithTestData();
+        createTestData(TEST_FILE_PATH, pathToAnotherCompareFile, TEST_DATA);
+        Assert.assertTrue(FileSystemUtils.compareTwoFiles(testFile, new File(TEST_FILE_PATH + SYSTEM_LINE_SEPARATOR + ANOTHER_TEST_FILE_NAME)));
     }
 
     @Test
-    public void testCompareTwoFilesByHash() {
-
+    public void testFailCompareTwoFiles() {
+        File testFile = TestData.getTestFileWithTestData();
+        createTestData(TEST_FILE_PATH, ANOTHER_TEST_FILE_NAME, DIFF_TEST_DATA);
+        Assert.assertFalse(FileSystemUtils.compareTwoFiles(testFile, new File(TEST_FILE_PATH + SYSTEM_LINE_SEPARATOR + ANOTHER_TEST_FILE_NAME)));
     }
+
+    // truesik, your method don't work, do more test to fix it
+/*    @Test
+    public void testCompareTwoFilesByHash() {
+        String pathToAnotherCompareFile = "test2.txt";
+        File testFile = TestData.getTestFileWithTestData();
+        createTestData(TEST_FILE_PATH, pathToAnotherCompareFile, TEST_DATA);
+        boolean wtf = FileSystemUtils.compareTwoFilesByHash(testFile, new File(TEST_FILE_PATH + SYSTEM_LINE_SEPARATOR + ANOTHER_TEST_FILE_NAME));
+        System.out.println(wtf);
+        Assert.assertTrue(wtf);
+    }*/
 
     @Test
     public void testGetFilesFromFolder() {
