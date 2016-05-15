@@ -158,7 +158,7 @@ public class FileUtils {
 
     public static void copyFiles(File file, String path) {
         try {
-            Files.copy(Paths.get(file.getPath()), Paths.get(path + file.getName()));
+            Files.copy(Paths.get(file.getPath()), Paths.get(path + File.separator + file.getName()));
         } catch (IOException e) {
             e.printStackTrace();
         }
