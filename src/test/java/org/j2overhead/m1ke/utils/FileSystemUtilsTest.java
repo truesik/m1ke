@@ -88,17 +88,6 @@ public class FileSystemUtilsTest {
         Assert.assertFalse(FileSystemUtils.compareTwoFiles(testFile, new File(TEST_FILE_PATH + SYSTEM_LINE_SEPARATOR + ANOTHER_TEST_FILE_NAME)));
     }
 
-    // truesik, your method don't work, do more test to fix it
-/*    @Test
-    public void testCompareTwoFilesByHash() {
-        String pathToAnotherCompareFile = "test2.txt";
-        File testFile = TestData.getTestFileWithTestData();
-        createTestData(TEST_FILE_PATH, pathToAnotherCompareFile, TEST_DATA);
-        boolean wtf = FileSystemUtils.compareTwoFilesByHash(testFile, new File(TEST_FILE_PATH + SYSTEM_LINE_SEPARATOR + ANOTHER_TEST_FILE_NAME));
-        System.out.println(wtf);
-        Assert.assertTrue(wtf);
-    }*/
-
     @Test
     public void testGetFilesFromFolder() {
         createTestData(TEST_FILE_PATH, TEST_FILE_NAME, TEST_DATA);
@@ -145,7 +134,7 @@ public class FileSystemUtilsTest {
     public void testCopyFiles() {
         createTestData(TEST_FILE_PATH, TEST_FILE_NAME, TEST_DATA);
         FileSystemUtils.createFolder(ANOTHER_TEST_FILE_PATH);
-        FileSystemUtils.copyFiles(new File(TEST_FILE_PATH + SYSTEM_LINE_SEPARATOR + TEST_FILE_NAME), ANOTHER_TEST_FILE_PATH);
+        FileSystemUtils.copyFile(new File(TEST_FILE_PATH + SYSTEM_LINE_SEPARATOR + TEST_FILE_NAME), ANOTHER_TEST_FILE_PATH);
         List<File> filesFromTest = FileSystemUtils.getFilesFromFolder(new File(TEST_FILE_PATH));
         List<File> filesFromTest2 = FileSystemUtils.getFilesFromFolder(new File(ANOTHER_TEST_FILE_PATH));
         Assert.assertTrue(FileSystemUtils.compareTwoFiles(filesFromTest2.get(0), filesFromTest.get(0)));

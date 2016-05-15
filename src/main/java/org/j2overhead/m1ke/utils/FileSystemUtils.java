@@ -23,16 +23,14 @@ public class FileSystemUtils {
         try (Scanner scannerFileOne = new Scanner(new FileInputStream(oldFile.getPath()));
              Scanner scannerFileTwo = new Scanner(new FileInputStream(newFile.getPath()))){
             while (scannerFileOne.hasNextLine()) {
-                String fileTwoNext = null;
-                String fileOneNext = null;
+                String fileTwoNext;
+                String fileOneNext;
                 try {
                     fileTwoNext = scannerFileTwo.nextLine();
                     fileOneNext = scannerFileOne.nextLine();
                 } catch (NoSuchElementException e) {
-
                     return false;
                 }
-
                 if (fileOneNext == null || fileTwoNext == null) {
                     return false;
                 }
@@ -136,7 +134,7 @@ public class FileSystemUtils {
         }
     }
 
-    public static void copyFiles(File file, String path) {
+    public static void copyFile(File file, String path) {
         try {
             Files.copy(Paths.get(file.getPath()), Paths.get(path + File.separator + file.getName()));
         } catch (IOException e) {
@@ -191,20 +189,5 @@ public class FileSystemUtils {
         try(DirectoryStream<Path> dirStream = Files.newDirectoryStream(directory)) {
             return !dirStream.iterator().hasNext();
         }
-    }
-
-    // don't work
-    public static boolean compareTwoFilesByHash(File oldFile, File newFile) {
-        try {
-            MessageDigest messageDigest = MessageDigest.getInstance("MD5");
-            InputStream oldFileInputStream = Files.newInputStream(Paths.get(oldFile.getPath()));
-            InputStream newFileInputStream = Files.newInputStream(Paths.get(newFile.getPath()));
-            DigestInputStream oldFileDigestInputStream = new DigestInputStream(oldFileInputStream, messageDigest);
-            DigestInputStream newFileDigestInputStream = new DigestInputStream(newFileInputStream, messageDigest);
-            messageDigest.digest();
-        } catch (NoSuchAlgorithmException | IOException e) {
-            e.printStackTrace();
-        }
-        return false;
     }
 }
