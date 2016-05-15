@@ -143,6 +143,14 @@ public class FileSystemUtilsTest {
 
     @Test
     public void testCopyFiles() {
-
+        createTestData(TEST_FILE_PATH, TEST_FILE_NAME, TEST_DATA);
+        FileSystemUtils.createFolder(ANOTHER_TEST_FILE_PATH);
+        FileSystemUtils.copyFiles(new File(TEST_FILE_PATH + SYSTEM_LINE_SEPARATOR + TEST_FILE_NAME), ANOTHER_TEST_FILE_PATH);
+        List<File> filesFromTest = FileSystemUtils.getFilesFromFolder(new File(TEST_FILE_PATH));
+        List<File> filesFromTest2 = FileSystemUtils.getFilesFromFolder(new File(ANOTHER_TEST_FILE_PATH));
+        Assert.assertTrue(FileSystemUtils.compareTwoFiles(filesFromTest2.get(0), filesFromTest.get(0)));
+//        for (int i = 0; i < filesFromTest.size(); i++) {
+//            Assert.assertTrue(FileSystemUtils.compareTwoFiles(filesFromTest.get(i), filesFromTest2.get(i)));
+//        }
     }
 }

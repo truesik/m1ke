@@ -15,6 +15,7 @@ public class TestData {
    private static final Logger LOG = LoggerFactory.getLogger(TestData.class.getClass());
 
    public static String TEST_FILE_PATH = "D:" + SYSTEM_LINE_SEPARATOR +"test";
+   public static String ANOTHER_TEST_FILE_PATH = "D:" + SYSTEM_LINE_SEPARATOR + "test2";
    public static String TEST_FILE_NAME = "test.txt";
    public static String ANOTHER_TEST_FILE_NAME = "test2.txt";
    public static String ABSOLUTE_TEST_FILE_PATH_AND_NAME = TEST_FILE_PATH + File.separator + TEST_FILE_NAME;
