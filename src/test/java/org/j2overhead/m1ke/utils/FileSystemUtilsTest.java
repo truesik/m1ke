@@ -1,6 +1,7 @@
 package org.j2overhead.m1ke.utils;
 
 import org.apache.commons.io.FileUtils;
+import org.j2overhead.m1ke.TestData;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -71,7 +72,10 @@ public class FileSystemUtilsTest {
 
     @Test
     public void testCompareTwoFiles() {
-
+        String pathToSameCompareFile = "test2.txt";
+        File testFile = TestData.getTestFile();
+        createTestData(TEST_FILE_PATH, pathToSameCompareFile, TEST_DATA);
+        Assert.assertTrue(FileSystemUtils.compareTwoFiles(testFile, new File(TEST_FILE_PATH + SYSTEM_LINE_SEPARATOR + pathToSameCompareFile)));
     }
 
     @Test
