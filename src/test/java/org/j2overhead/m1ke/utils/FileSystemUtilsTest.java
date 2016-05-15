@@ -4,12 +4,19 @@ import org.apache.commons.io.FileUtils;
 import org.j2overhead.m1ke.TestData;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.Stopwatch;
+import org.junit.runner.Description;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static org.j2overhead.m1ke.TestData.*;
 import static org.j2overhead.m1ke.utils.FileSystemUtils.SYSTEM_LINE_SEPARATOR;
@@ -27,7 +34,7 @@ public class FileSystemUtilsTest {
         }
     }
 
-    /*@Rule
+    @Rule
     public Stopwatch stopwatch = new Stopwatch() {
         private void logInfo(Description description, long nanos) {
             LOG.info("\n+++ Test {} spent {} microseconds", description.getMethodName(), TimeUnit.NANOSECONDS.toMicros(nanos));
@@ -37,7 +44,7 @@ public class FileSystemUtilsTest {
         protected void finished(long nanos, Description description) {
             logInfo(description, nanos);
         }
-    };*/
+    };
 
     @Test
     public void testCreateFolder() {
@@ -69,9 +76,8 @@ public class FileSystemUtilsTest {
 
     @Test
     public void testCompareTwoFiles() {
-        String pathToAnotherCompareFile = "test2.txt";
         File testFile = TestData.getTestFileWithTestData();
-        createTestData(TEST_FILE_PATH, pathToAnotherCompareFile, TEST_DATA);
+        createTestData(TEST_FILE_PATH, ANOTHER_TEST_FILE_NAME, TEST_DATA);
         Assert.assertTrue(FileSystemUtils.compareTwoFiles(testFile, new File(TEST_FILE_PATH + SYSTEM_LINE_SEPARATOR + ANOTHER_TEST_FILE_NAME)));
     }
 
@@ -95,12 +101,27 @@ public class FileSystemUtilsTest {
 
     @Test
     public void testGetFilesFromFolder() {
-
+        createTestData(TEST_FILE_PATH, TEST_FILE_NAME, TEST_DATA);
+        createTestData(TEST_FILE_PATH, ANOTHER_TEST_FILE_NAME, DIFF_TEST_DATA);
+        ArrayList<File> files = new ArrayList<File>();
+        files.add(new File(TEST_FILE_PATH + SYSTEM_LINE_SEPARATOR + TEST_FILE_NAME));
+        files.add(new File(TEST_FILE_PATH + SYSTEM_LINE_SEPARATOR + ANOTHER_TEST_FILE_NAME));
+        List<File> filesFromFolder = FileSystemUtils.getFilesFromFolder(new File(TEST_FILE_PATH));
+        Assert.assertArrayEquals(filesFromFolder.toArray(), files.toArray());
     }
 
     @Test
     public void testGetFolders() {
-
+        FileSystemUtils.createFolder(TEST_FILE_PATH);
+        FileSystemUtils.createFolder("D://test/test1");
+        FileSystemUtils.createFolder("D://test/test2");
+        FileSystemUtils.createFolder("D://test/test3");
+        ArrayList<File> folders = new ArrayList<File>();
+        folders.add(new File("D://test/test1"));
+        folders.add(new File("D://test/test2"));
+        folders.add(new File("D://test/test3"));
+        List<File> folderFromPath = FileSystemUtils.getFolders(new File(TEST_FILE_PATH));
+        Assert.assertArrayEquals(folderFromPath.toArray(), folders.toArray());
     }
 
     @Test
@@ -110,13 +131,18 @@ public class FileSystemUtilsTest {
 
     @Test
     public void testDeleteFiles() {
-
+        createTestData(TEST_FILE_PATH, TEST_FILE_NAME, TEST_DATA);
+        createTestData(TEST_FILE_PATH, ANOTHER_TEST_FILE_NAME, DIFF_TEST_DATA);
+        FileSystemUtils.deleteFiles(TEST_FILE_PATH);
+        try {
+            Assert.assertTrue(FileSystemUtils.isDirEmpty(Paths.get(TEST_FILE_PATH)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void testCopyFiles() {
 
     }
-
-
 }
