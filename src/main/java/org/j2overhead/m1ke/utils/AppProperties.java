@@ -20,7 +20,6 @@ public class AppProperties {
     }
 
     private AppProperties() {
-        createInitStatusFile();
     }
 
     /**
@@ -36,7 +35,8 @@ public class AppProperties {
                 return isInit(properties.getProperty("INIT_STATUS"));
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("m1ke must be init ");
+            return false;
         }
         return false;
     }
@@ -51,6 +51,11 @@ public class AppProperties {
         try (OutputStream outputStream = new FileOutputStream(getProgramFolder() + File.separator + INIT_PROPERTY)) {
             properties.setProperty("INIT_STATUS", init ? "1" : "0");
             properties.store(outputStream, null);
+            if (init) {
+                System.out.println("m1ke is init");
+            } else {
+                System.out.println("m1ke is deactivate");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

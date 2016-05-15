@@ -30,11 +30,15 @@ public class TestData {
 
    public static void createTestData(String folder, String fileName, String data) {
       if (Files.exists(Paths.get(folder))) {
-         LOG.info(folder + "is exists");
+         LOG.info(folder + " is exists");
       } else {
          FileSystemUtils.createFolder(folder);
       }
-      FileSystemUtils.createFile(folder + SYSTEM_LINE_SEPARATOR + fileName);
+      if (Files.exists(Paths.get(folder + SYSTEM_LINE_SEPARATOR + fileName))) {
+         LOG.info(folder + SYSTEM_LINE_SEPARATOR + fileName + "is exists");
+      } else {
+         FileSystemUtils.createFile(folder + SYSTEM_LINE_SEPARATOR + fileName);
+      }
       FileSystemUtils.writeStringToFile(folder + SYSTEM_LINE_SEPARATOR + fileName, data);
    }
 

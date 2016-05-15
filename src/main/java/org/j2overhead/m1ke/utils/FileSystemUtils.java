@@ -13,8 +13,8 @@ import java.util.Scanner;
 
 public class FileSystemUtils {
     public final static String SYSTEM_LINE_SEPARATOR = File.separator;
-    public final static String DEFAULT_FOLDER = File.separator + ".m1ke";
-    public final static String DEFAULT_BRANCH = File.separator + "master";
+    public final static String DEFAULT_FOLDER = SYSTEM_LINE_SEPARATOR + ".m1ke";
+    public final static String DEFAULT_BRANCH = SYSTEM_LINE_SEPARATOR + "master";
     public final static String DEFAULT_BRANCHES_FOLDER = SYSTEM_LINE_SEPARATOR + "branches";
     public final static String DEFAULT_SYSTEM_FOLDER = SYSTEM_LINE_SEPARATOR + "system";
     public final static String CURRENT_RUNTIME_USER_DIR = System.getProperty("user.dir");
@@ -48,20 +48,6 @@ public class FileSystemUtils {
         return true;
     }
 
-    public static boolean compareTwoFilesByHash(File oldFile, File newFile) {
-        try {
-            MessageDigest messageDigest = MessageDigest.getInstance("MD5");
-            InputStream oldFileInputStream = Files.newInputStream(Paths.get(oldFile.getPath()));
-            InputStream newFileInputStream = Files.newInputStream(Paths.get(newFile.getPath()));
-            DigestInputStream oldFileDigestInputStream = new DigestInputStream(oldFileInputStream, messageDigest);
-            DigestInputStream newFileDigestInputStream = new DigestInputStream(newFileInputStream, messageDigest);
-            messageDigest.digest();
-        } catch (NoSuchAlgorithmException | IOException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
     public static List<File> getFilesFromFolder(File pathToFolder) {
         List<File> fileList = new ArrayList<>();
         File[] files = pathToFolder.listFiles();
@@ -88,8 +74,8 @@ public class FileSystemUtils {
         return folderList;
     }
 
-    public static void saveFileTree(String comment) {
-        String userDir = System.getProperty("user.dir");
+    public static void saveFileTree(String endPointPath) {
+
         class MyFileFindVisitor extends SimpleFileVisitor<Path> {
 
             public FileVisitResult visitFile(Path path, BasicFileAttributes fileAttributes) {
@@ -128,11 +114,10 @@ public class FileSystemUtils {
         try {
             String pattern = "glob:*";
             System.out.println("File list: ");
-            Files.walkFileTree(Paths.get(userDir), new MyFileFindVisitor(pattern));
+            Files.walkFileTree(Paths.get(CURRENT_RUNTIME_USER_DIR), new MyFileFindVisitor(pattern));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("Save " + userDir + (comment.equals("") ? "" : " with comment: " + comment));
     }
 
     public static void deleteFiles(String path) {
@@ -200,5 +185,26 @@ public class FileSystemUtils {
             e.printStackTrace();
         }
         return readData.toString();
+    }
+
+    public static boolean isDirEmpty(final Path directory) throws IOException {
+        try(DirectoryStream<Path> dirStream = Files.newDirectoryStream(directory)) {
+            return !dirStream.iterator().hasNext();
+        }
+    }
+
+    // don't work
+    public static boolean compareTwoFilesByHash(File oldFile, File newFile) {
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+            InputStream oldFileInputStream = Files.newInputStream(Paths.get(oldFile.getPath()));
+            InputStream newFileInputStream = Files.newInputStream(Paths.get(newFile.getPath()));
+            DigestInputStream oldFileDigestInputStream = new DigestInputStream(oldFileInputStream, messageDigest);
+            DigestInputStream newFileDigestInputStream = new DigestInputStream(newFileInputStream, messageDigest);
+            messageDigest.digest();
+        } catch (NoSuchAlgorithmException | IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

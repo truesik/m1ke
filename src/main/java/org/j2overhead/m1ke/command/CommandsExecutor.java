@@ -4,8 +4,8 @@ import org.j2overhead.m1ke.service.BranchService;
 import org.j2overhead.m1ke.service.BranchServiceImpl;
 import org.j2overhead.m1ke.service.RepositoryService;
 import org.j2overhead.m1ke.service.RepositoryServiceImpl;
-import org.j2overhead.m1ke.utils.FileSystemUtils;
 import org.j2overhead.m1ke.utils.AppProperties;
+import org.j2overhead.m1ke.utils.FileSystemUtils;
 
 public class CommandsExecutor {
     private static CommandsExecutor instance;
@@ -27,30 +27,43 @@ public class CommandsExecutor {
     public void execute(String[] args) {
         if (args.length > 0) {
             switch (args[0]) {
-                case "init":
+                case "init": {
                     init();
                     break;
-                case "integrate":
+                }
+                case "integrate": {
                     integrate();
                     break;
-                case "create-branch":
+                }
+                case "create-branch": {
                     createBranch(args[1]);
                     break;
-                case "remove-branch":
+                }
+                case "remove-branch": {
                     removeBranch(args[1]);
                     break;
-                case "get-branch":
+                }
+                case "get-branch": {
+                    if (args.length <= 1) {
+                        System.out.println(" You must set name for you branch");
+                        help();
+                        break;
+                    }
                     branchRewritePerository(args[1]);
                     break;
-                case "save":
+                }
+                case "save": {
                     save(args);
                     break;
-                case "quit":
+                }
+                case "quit": {
                     quit();
                     break;
-                case "help":
+                }
+                case "help": {
                     help();
                     break;
+                }
                 default: help();
             }
         } else {
@@ -59,7 +72,6 @@ public class CommandsExecutor {
     }
 
     private void init() {
-        //Для того чтобы запустить m1ke нужно выполнить команду m1ke 'init"
         AppProperties.getInstance().writeInitStatus(true);
     }
 
@@ -116,13 +128,13 @@ public class CommandsExecutor {
 
     private void help() {
         System.out.println("commands: \n" +
-                "    INIT,\n" +
-                "    INTEGRATE,\n" +
-                "    SAVE,\n" +
-                "    CREATE_BRANCH,\n" +
-                "    REMOVE_BRANCH,\n" +
-                "    GET_BRANCH,\n" +
-                "    QUIT");
+                "    init,\n" +
+                "    integrate,\n" +
+                "    save,\n" +
+                "    create-branch,\n" +
+                "    remove-branch,\n" +
+                "    get-branch,\n" +
+                "    quit");
     }
 
     private boolean isInit() {
