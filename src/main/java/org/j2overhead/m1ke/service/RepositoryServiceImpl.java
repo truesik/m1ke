@@ -40,7 +40,7 @@ public class RepositoryServiceImpl implements RepositoryService {
     }
 
     public void saveBranch(File path, String targetPath) {
-        if (new File(path.getPath() + targetPath).mkdir()) {
+        if (FileSystemUtils.createFolder(new File(path.getPath() + targetPath).getPath())) {
             for (File file : FileSystemUtils.getFilesFromFolder(path)) {
                 try {
                     String name = file.getName();
