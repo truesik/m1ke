@@ -31,7 +31,7 @@ public class CommandsExecutor {
                     init();
                     break;
                 case "integrate":
-                    integrate(args[1]);
+                    integrate();
                     break;
                 case "create-branch":
                     createBranch(args[1]);
@@ -51,25 +51,25 @@ public class CommandsExecutor {
                 case "help":
                     help();
                     break;
+                default: help();
             }
         } else {
-            System.out.println("m1ke help");
+            help();
         }
     }
 
     private void init() {
         //Для того чтобы запустить m1ke нужно выполнить команду m1ke 'init"
         AppProperties.getInstance().writeInitStatus(true);
-        System.out.println("m1ke initiated");
     }
 
 //            К примеру у нас есть папка C:\project . Для того чтобы просканировать папку на файлы
-//            и уже сделанные изменения нужно выполнить:  m1ke integrate %FOLDER_NAME%
+//            и уже сделанные изменения нужно выполнить:  m1ke integrate из командной строки конкретно в этой папке
 //            После этой команды m1ke открывает конкретную юзер ветку (branch) которая там сохранилась
 //            (если она там не одна, то открывается та ветка, в которой произошли последние изменения).
-    private void integrate(String pathToUserFolder) {
+    private void integrate() {
         if (isInit()) {
-            repositoryService.integrate(pathToUserFolder);
+            repositoryService.integrate(FileSystemUtils.CURRENT_RUNTIME_USER_DIR);
         }
     }
 
@@ -115,7 +115,8 @@ public class CommandsExecutor {
     }
 
     private void help() {
-        System.out.println("commands: INIT,\n" +
+        System.out.println("commands: \n" +
+                "    INIT,\n" +
                 "    INTEGRATE,\n" +
                 "    SAVE,\n" +
                 "    CREATE_BRANCH,\n" +

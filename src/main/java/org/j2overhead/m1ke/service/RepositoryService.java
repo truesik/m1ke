@@ -14,7 +14,7 @@ public interface RepositoryService {
 
     void createDefaultBranch(File path);
 
-    void branchRewriteRepository(String path, Branch branch);
+    void branchRewritePerository(String path, Branch branch);
 
     void createBranch(String name);
 
