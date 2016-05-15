@@ -49,7 +49,7 @@ public class CommandsExecutor {
                         help();
                         break;
                     }
-                    branchRewritePerository(args[1]);
+                    getBranch(args[1]);
                     break;
                 }
                 case "save": {
@@ -102,9 +102,9 @@ public class CommandsExecutor {
 //            m1ke get-branch someBranchName
 //            Когда вы выбираете ветку - вы автоматически подтягиваете изменения которые вы там же и сохранили с помощью m1ke saveBranch
 //            Если вы переходите на другую ветку, но вы уже сделали какие то изменения, то вы эти изменения теряете.
-    private void branchRewritePerository(String name) {
+    private void getBranch(String name) {
         if (isInit()) {
-            repositoryService.branchRewritePerository(FileSystemUtils.CURRENT_RUNTIME_USER_DIR, branchService.getBranchByName(name, FileSystemUtils.CURRENT_RUNTIME_USER_DIR));
+            repositoryService.getFilesFromBranch(FileSystemUtils.CURRENT_RUNTIME_USER_DIR, branchService.getBranchByName(name, FileSystemUtils.CURRENT_RUNTIME_USER_DIR));
         }
     }
 
