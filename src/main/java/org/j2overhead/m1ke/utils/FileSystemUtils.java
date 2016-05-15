@@ -177,4 +177,27 @@ public class FileSystemUtils {
         }
         return Files.exists(Paths.get(path));
     }
+
+    public static void writeStringToFile(String path, String data) {
+        try(FileWriter fileWriter = new FileWriter(path)) {
+            fileWriter.write(data);
+            fileWriter.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static String readStringFromFile(String path) {
+        StringBuilder readData = new StringBuilder();
+        try(FileReader fileReader = new FileReader(path)) {
+            char[] chars = new char[1];
+            while (fileReader.ready()) {
+                fileReader.read(chars);
+                readData.append(chars);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return readData.toString();
+    }
 }
