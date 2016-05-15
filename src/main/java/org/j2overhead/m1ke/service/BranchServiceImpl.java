@@ -1,14 +1,14 @@
 package org.j2overhead.m1ke.service;
 
 import org.j2overhead.m1ke.model.Branch;
-import org.j2overhead.m1ke.utils.FileUtils;
+import org.j2overhead.m1ke.utils.FileSystemUtils;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.j2overhead.m1ke.utils.FileUtils.DEFAULT_BRANCHES_FOLDER;
-import static org.j2overhead.m1ke.utils.FileUtils.DEFAULT_FOLDER;
+import static org.j2overhead.m1ke.utils.FileSystemUtils.DEFAULT_BRANCHES_FOLDER;
+import static org.j2overhead.m1ke.utils.FileSystemUtils.DEFAULT_FOLDER;
 
 public class BranchServiceImpl implements BranchService {
 
@@ -24,14 +24,21 @@ public class BranchServiceImpl implements BranchService {
         return instance;
     }
 
+
+    /**
+     * Сканирует папку /.m1ke/branches и выдает список всех созданных веток (папок).
+     *
+     * @param pathToFolder путь к запрашиваемой папке юзера.
+     * @return Список папок (веток).
+     */
     @Override
     public List<Branch> getBranches(String pathToFolder) {
         List<Branch> branchList = new ArrayList<>();
-        List<File> branchesPath = FileUtils.getFolders(new File(pathToFolder + DEFAULT_FOLDER + DEFAULT_BRANCHES_FOLDER));
+        List<File> branchesPath = FileSystemUtils.getFolders(new File(pathToFolder + DEFAULT_FOLDER + DEFAULT_BRANCHES_FOLDER));
         for (File branchPath : branchesPath) {
             Branch branch = new Branch();
             branch.setName(branchPath.getName());
-            branch.setFiles(FileUtils.getFilesFromFolder(branchPath));
+            branch.setFiles(FileSystemUtils.getFilesFromFolder(branchPath));
             branchList.add(branch);
         }
         return branchList;

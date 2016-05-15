@@ -4,8 +4,8 @@ import org.j2overhead.m1ke.service.BranchService;
 import org.j2overhead.m1ke.service.BranchServiceImpl;
 import org.j2overhead.m1ke.service.RepositoryService;
 import org.j2overhead.m1ke.service.RepositoryServiceImpl;
-import org.j2overhead.m1ke.utils.FileUtils;
-import org.j2overhead.m1ke.utils.InitProperty;
+import org.j2overhead.m1ke.utils.FileSystemUtils;
+import org.j2overhead.m1ke.utils.AppProperties;
 
 public class CommandsExecutor {
     private static CommandsExecutor instance;
@@ -59,7 +59,7 @@ public class CommandsExecutor {
 
     private void init() {
         //Для того чтобы запустить m1ke нужно выполнить команду m1ke 'init"
-        InitProperty.getInstance().writeInitStatus(true);
+        AppProperties.getInstance().writeInitStatus(true);
         System.out.println("m1ke initiated");
     }
 
@@ -92,7 +92,7 @@ public class CommandsExecutor {
 //            Если вы переходите на другую ветку, но вы уже сделали какие то изменения, то вы эти изменения теряете.
     private void branchRewritePerository(String name) {
         if (isInit()) {
-            repositoryService.branchRewriteRepository(FileUtils.CURRENT_RUNTIME_USER_DIR, branchService.getBranchByName(name, FileUtils.CURRENT_RUNTIME_USER_DIR));
+            repositoryService.branchRewritePerository(FileSystemUtils.CURRENT_RUNTIME_USER_DIR, branchService.getBranchByName(name, FileSystemUtils.CURRENT_RUNTIME_USER_DIR));
         }
     }
 
@@ -109,16 +109,22 @@ public class CommandsExecutor {
 
     private void quit() {
         if (isInit()) {
-            InitProperty.getInstance().writeInitStatus(false);
+            AppProperties.getInstance().writeInitStatus(false);
             System.out.println("Cya");
         }
     }
 
     private void help() {
-        System.out.println("bla bla help: command, command");
+        System.out.println("commands: INIT,\n" +
+                "    INTEGRATE,\n" +
+                "    SAVE,\n" +
+                "    CREATE_BRANCH,\n" +
+                "    REMOVE_BRANCH,\n" +
+                "    GET_BRANCH,\n" +
+                "    QUIT");
     }
 
     private boolean isInit() {
-        return InitProperty.getInstance().readInitStatus();
+        return AppProperties.getInstance().readInitStatus();
     }
 }

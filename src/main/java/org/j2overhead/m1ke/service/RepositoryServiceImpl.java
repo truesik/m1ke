@@ -1,8 +1,8 @@
 package org.j2overhead.m1ke.service;
 
 import org.j2overhead.m1ke.model.Branch;
-import org.j2overhead.m1ke.utils.FileUtils;
-import org.j2overhead.m1ke.utils.LastOpenedBranchPropertyService;
+import org.j2overhead.m1ke.utils.AppProperties;
+import org.j2overhead.m1ke.utils.FileSystemUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,7 +13,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
-import static org.j2overhead.m1ke.utils.FileUtils.*;
+import static org.j2overhead.m1ke.utils.FileSystemUtils.*;
 
 public class RepositoryServiceImpl implements RepositoryService {
 
@@ -41,7 +41,7 @@ public class RepositoryServiceImpl implements RepositoryService {
 
     public void saveBranch(File path, String targetPath) {
         if (new File(path.getPath() + targetPath).mkdir()) {
-            for (File file : FileUtils.getFilesFromFolder(path)) {
+            for (File file : FileSystemUtils.getFilesFromFolder(path)) {
                 try {
                     String name = file.getName();
                     Files.copy(Paths.get(file.getPath()), Paths.get(path + targetPath + File.separator + name), REPLACE_EXISTING);
@@ -59,24 +59,21 @@ public class RepositoryServiceImpl implements RepositoryService {
         saveBranch(path, DEFAULT_FOLDER + DEFAULT_BRANCHES_FOLDER + DEFAULT_BRANCH);
     }
     @Override
-    public void branchRewriteRepository(String path, Branch branch) {
-        FileUtils.deleteFiles(path);
+    public void branchRewritePerository(String path, Branch branch) {
+        FileSystemUtils.deleteFiles(path);
         for (File file : branch.getFiles()) {
-            FileUtils.copyFiles(file, path);
+            FileSystemUtils.copyFiles(file, path);
         }
     }
 
     @Override
     public void createBranch(String name) {
-        // проверить есть ли ветка с таким же названием
-        // скопировать все файлы из открытой в данный момент ветки в новоую ветку
-        // перезаписать last-opened-branch.property
+
     }
 
     @Override
     public void removeBranch(String nameOfBranch) {
-        // проверить чтобы ветка которую хотим удалить не являлась открытой в данный момент
-        // удалить
+
     }
 
     @Override
@@ -87,20 +84,20 @@ public class RepositoryServiceImpl implements RepositoryService {
     @Override
     public void integrate(String pathToFolder) {
         if (!branchService.getBranches(pathToFolder).isEmpty()) {
-            String nameOfLastOpenedBranch = LastOpenedBranchPropertyService.getInstance().readLastOpenedBranch(pathToFolder);
+            String nameOfLastOpenedBranch = AppProperties.getInstance().readLastOpenedBranch(pathToFolder);
             Branch lastOpenedBranch = branchService.getBranchByName(nameOfLastOpenedBranch, pathToFolder);
             List<File> files = lastOpenedBranch.getFiles();
-            List<File> filesFromFolder = FileUtils.getFilesFromFolder(new File(pathToFolder));
+            List<File> filesFromFolder = FileSystemUtils.getFilesFromFolder(new File(pathToFolder));
             for (File file : files) {
                 for (File file1 : filesFromFolder) {
-                    if (!FileUtils.compareTwoFiles(file, file1)) {
+                    if (!FileSystemUtils.compareTwoFiles(file, file1)) {
                         System.out.println("different");
                         System.out.println("delete your bullshit? y/n");
                         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
                         try {
                             String m = reader.readLine();
                             if (m.equals("y")) {
-                                branchRewriteRepository(pathToFolder, lastOpenedBranch);
+                                branchRewritePerository(pathToFolder, lastOpenedBranch);
                             }
                         } catch (IOException e) {
                             e.printStackTrace();
