@@ -5,19 +5,21 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.util.Properties;
 
-public class InitProperty {
+public class AppProperties {
     private static final String INIT_PROPERTY = "init.property";
+    private static final String REPOSITORY_SETTINGS_PATH = ".m1ke" + File.separator + "system";
+    private static final String LAST_OPENED_BRANCH = "last-opened-branch.property";
 
-    private static InitProperty instance;
+    private static AppProperties instance;
 
-    public static InitProperty getInstance() {
+    public static AppProperties getInstance() {
         if (instance == null) {
-            instance = new InitProperty();
+            instance = new AppProperties();
         }
         return instance;
     }
 
-    private InitProperty() {
+    private AppProperties() {
         createInitStatusFile();
     }
 
@@ -76,7 +78,7 @@ public class InitProperty {
     }
 
     private String getProgramFolder() {
-        URL url = InitProperty.class.getProtectionDomain().getCodeSource().getLocation();
+        URL url = AppProperties.class.getProtectionDomain().getCodeSource().getLocation();
         String parentPath = null;
         try {
             String jarPath = URLDecoder.decode(url.getFile(), "UTF-8");
@@ -85,5 +87,41 @@ public class InitProperty {
             e.printStackTrace();
         }
         return parentPath;
+    }
+
+    public String readLastOpenedBranch(String pathOfIntegratedFolder) {
+        Properties properties = new Properties();
+        try (InputStream inputStream = new FileInputStream(pathOfIntegratedFolder + File.separator + REPOSITORY_SETTINGS_PATH + File.separator + LAST_OPENED_BRANCH)) {
+            properties.load(inputStream);
+            if (properties.containsKey("LAST_OPENED_BRANCH")) {
+                return properties.getProperty("LAST_OPENED_BRANCH");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public void writeLastOpenedBranch(String name, String pathOfIntegratedFolder) {
+        Properties properties = new Properties();
+        try (OutputStream outputStream = new FileOutputStream(pathOfIntegratedFolder + File.separator + REPOSITORY_SETTINGS_PATH + LAST_OPENED_BRANCH)) {
+            properties.setProperty("LAST_OPENED_BRANCH", name);
+            properties.store(outputStream, null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void createLastOpenedBranchFile(String pathOfIntegratedFolder) {
+        File file = new File(pathOfIntegratedFolder + File.separator + REPOSITORY_SETTINGS_PATH + LAST_OPENED_BRANCH);
+        try {
+            if (file.createNewFile()) {
+                System.out.println("File is created");
+            } else {
+                System.out.println("File already exists");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

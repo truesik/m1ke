@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-public class FileUtils {
+public class FileSystemUtils {
     public final static String DEFAULT_FOLDER = File.separator + ".m1ke";
     public final static String DEFAULT_BRANCH = File.separator + "master";
     public final static String DEFAULT_BRANCHES_FOLDER = File.separator + "branches";
@@ -74,23 +74,17 @@ public class FileUtils {
         return fileList;
     }
 
-    /**
-     * Сканирует папку /.m1ke/branches и выдает список всех созданных веток (папок).
-     *
-     * @param file путь к /.m1ke/branches.
-     * @return Список папок (веток).
-     */
     public static List<File> getFolders(File file) {
-        List<File> branchList = new ArrayList<>();
-        File[] branches = file.listFiles();
-        if (branches != null) {
-            for (File branch : branches) {
-                if (branch.isDirectory()) {
-                    branchList.add(branch);
+        List<File> folderList = new ArrayList<>();
+        File[] folders = file.listFiles();
+        if (folders != null) {
+            for (File folder : folders) {
+                if (folder.isDirectory()) {
+                    folderList.add(folder);
                 }
             }
         }
-        return branchList;
+        return folderList;
     }
 
     public static void saveFileTree(String comment) {
