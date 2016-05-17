@@ -3,9 +3,6 @@ package org.j2overhead.m1ke.utils;
 import java.io.*;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.security.DigestInputStream;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -171,7 +168,7 @@ public class FileSystemUtils {
         }
     }
 
-    public static String readStringFromFile(String path) {
+    public static String readStringDataFromFile(String path) {
         StringBuilder readData = new StringBuilder();
         try(FileReader fileReader = new FileReader(path)) {
             char[] chars = new char[1];

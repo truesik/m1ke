@@ -75,3 +75,6 @@ crashlytics-build.properties
 fabric.properties
 
 # Created by .ignore support plugin (hsz.mobi)
+
+qaplug_profiles.xml
+m1ke.iml
