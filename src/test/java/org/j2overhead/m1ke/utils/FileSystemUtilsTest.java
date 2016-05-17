@@ -60,7 +60,7 @@ public class FileSystemUtilsTest {
     @Test
     public void testWriteStringToFile() {
         createTestData(TEST_FILE_PATH, TEST_FILE_NAME, TEST_DATA);
-        String readString = FileSystemUtils.readStringFromFile(TEST_FILE_PATH + SYSTEM_LINE_SEPARATOR + TEST_FILE_NAME);
+        String readString = FileSystemUtils.readStringDataFromFile(TEST_FILE_PATH + SYSTEM_LINE_SEPARATOR + TEST_FILE_NAME);
         Assert.assertEquals(TEST_DATA, readString);
     }
 
@@ -69,7 +69,7 @@ public class FileSystemUtilsTest {
         FileSystemUtils.createFolder(TEST_FILE_PATH);
         FileSystemUtils.createFile(ABSOLUTE_TEST_FILE_PATH_AND_NAME);
         FileSystemUtils.writeStringToFile(ABSOLUTE_TEST_FILE_PATH_AND_NAME, TEST_DATA);
-        String readData = FileSystemUtils.readStringFromFile(ABSOLUTE_TEST_FILE_PATH_AND_NAME);
+        String readData = FileSystemUtils.readStringDataFromFile(ABSOLUTE_TEST_FILE_PATH_AND_NAME);
         Assert.assertEquals(TEST_DATA, readData);
         LOG.info("\n {} \n equals: \n {} \n", TEST_DATA, readData);
     }
