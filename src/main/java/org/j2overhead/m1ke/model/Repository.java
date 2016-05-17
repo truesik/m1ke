@@ -4,11 +4,11 @@ import java.nio.file.Path;
 import java.util.List;
 
 public class Repository {
-    // path to m1ke repository
+    /**  path to m1ke repository */
     private Path path;
+    /** branches in repository*/
     private List<Branch> branches;
     private Branch lastOpenedBranch;
-
 
     public Path getPath() {
         return path;

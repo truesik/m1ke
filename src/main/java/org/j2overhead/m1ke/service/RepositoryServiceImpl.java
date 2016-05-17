@@ -91,13 +91,13 @@ public class RepositoryServiceImpl implements RepositoryService {
         if (!branchService.getBranches(pathToFolder).isEmpty()) {
             String nameOfLastOpenedBranch = AppProperties.getInstance().readLastOpenedBranch(pathToFolder);
             Branch lastOpenedBranch = branchService.getBranchByName(nameOfLastOpenedBranch, pathToFolder);
-            List<File> files = lastOpenedBranch.getFiles();
-            List<File> filesFromFolder = FileSystemUtils.getFilesFromFolder(new File(pathToFolder));
-            for (File file : files) {
-                for (File file1 : filesFromFolder) {
-                    if (!FileSystemUtils.compareTwoFiles(file, file1)) {
+            List<File> lastOpenedBranchFiles = lastOpenedBranch.getFiles();
+            List<File> currentFilesFromRepository = FileSystemUtils.getFilesFromFolder(new File(pathToFolder));
+            for (File lastOpenedBranchFile : lastOpenedBranchFiles) {
+                for (File currentFolderFile : currentFilesFromRepository) {
+                    if (!FileSystemUtils.compareTwoFiles(lastOpenedBranchFile, currentFolderFile)) {
                         System.out.println("different");
-                        System.out.println("delete your bullshit? y/n");
+                        System.out.println("delete your data? y/n");
                         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
                         try {
                             String m = reader.readLine();
