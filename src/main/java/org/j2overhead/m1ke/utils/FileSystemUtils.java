@@ -3,9 +3,6 @@ package org.j2overhead.m1ke.utils;
 import java.io.*;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.security.DigestInputStream;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -18,6 +15,9 @@ public class FileSystemUtils {
     public final static String DEFAULT_BRANCHES_FOLDER = SYSTEM_LINE_SEPARATOR + "branches";
     public final static String DEFAULT_SYSTEM_FOLDER = SYSTEM_LINE_SEPARATOR + "system";
     public final static String CURRENT_RUNTIME_USER_DIR = System.getProperty("user.dir");
+
+    private FileSystemUtils() {
+    }
 
     public static boolean compareTwoFiles(File oldFile, File newFile) {
         try (Scanner scannerFileOne = new Scanner(new FileInputStream(oldFile.getPath()));
@@ -164,7 +164,7 @@ public class FileSystemUtils {
         return Files.exists(Paths.get(path));
     }
 
-    public static void writeStringToFile(String path, String data) {
+    public static void writeStringDataToFile(String path, String data) {
         try(FileWriter fileWriter = new FileWriter(path)) {
             fileWriter.write(data);
             fileWriter.flush();
@@ -173,7 +173,7 @@ public class FileSystemUtils {
         }
     }
 
-    public static String readStringFromFile(String path) {
+    public static String readStringDataFromFile(String path) {
         StringBuilder readData = new StringBuilder();
         try(FileReader fileReader = new FileReader(path)) {
             char[] chars = new char[1];
@@ -191,20 +191,5 @@ public class FileSystemUtils {
         try(DirectoryStream<Path> dirStream = Files.newDirectoryStream(directory)) {
             return !dirStream.iterator().hasNext();
         }
-    }
-
-    // don't work
-    public static boolean compareTwoFilesByHash(File oldFile, File newFile) {
-        try {
-            MessageDigest messageDigest = MessageDigest.getInstance("MD5");
-            InputStream oldFileInputStream = Files.newInputStream(Paths.get(oldFile.getPath()));
-            InputStream newFileInputStream = Files.newInputStream(Paths.get(newFile.getPath()));
-            DigestInputStream oldFileDigestInputStream = new DigestInputStream(oldFileInputStream, messageDigest);
-            DigestInputStream newFileDigestInputStream = new DigestInputStream(newFileInputStream, messageDigest);
-            messageDigest.digest();
-        } catch (NoSuchAlgorithmException | IOException e) {
-            e.printStackTrace();
-        }
-        return false;
     }
 }

@@ -40,7 +40,7 @@ public class TestData {
       } else {
          FileSystemUtils.createFile(folder + SYSTEM_LINE_SEPARATOR + fileName);
       }
-      FileSystemUtils.writeStringToFile(folder + SYSTEM_LINE_SEPARATOR + fileName, data);
+      FileSystemUtils.writeStringDataToFile(folder + SYSTEM_LINE_SEPARATOR + fileName, data);
    }
 
    public static File getTestFileWithTestData() {
