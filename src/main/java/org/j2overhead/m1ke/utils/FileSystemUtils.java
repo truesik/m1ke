@@ -16,6 +16,9 @@ public class FileSystemUtils {
     public final static String DEFAULT_SYSTEM_FOLDER = SYSTEM_LINE_SEPARATOR + "system";
     public final static String CURRENT_RUNTIME_USER_DIR = System.getProperty("user.dir");
 
+    private FileSystemUtils() {
+    }
+
     public static boolean compareTwoFiles(File oldFile, File newFile) {
         try (Scanner scannerFileOne = new Scanner(new FileInputStream(oldFile.getPath()));
              Scanner scannerFileTwo = new Scanner(new FileInputStream(newFile.getPath()))){
