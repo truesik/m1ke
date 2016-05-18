@@ -1,50 +1,21 @@
 package org.j2overhead.m1ke.utils;
 
-import org.apache.commons.io.FileUtils;
+import org.j2overhead.m1ke.AbstractTest;
 import org.j2overhead.m1ke.TestData;
-import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.Stopwatch;
-import org.junit.runner.Description;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import static org.j2overhead.m1ke.TestData.*;
 import static org.j2overhead.m1ke.utils.FileSystemUtils.SYSTEM_LINE_SEPARATOR;
 import static org.junit.Assert.*;
 
 
-public class FileSystemUtilsTest {
-    private final Logger LOG = LoggerFactory.getLogger(getClass());
-
-    @Before
-    public void removeTestData() {
-        try {
-            FileUtils.deleteDirectory(new File(TEST_FILE_PATH));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Rule
-    public Stopwatch stopwatch = new Stopwatch() {
-        private void logInfo(Description description, long nanos) {
-            LOG.info("\n+++ Test {} spent {} microseconds", description.getMethodName(), TimeUnit.NANOSECONDS.toMicros(nanos));
-        }
-
-        @Override
-        protected void finished(long nanos, Description description) {
-            logInfo(description, nanos);
-        }
-    };
+public class FileSystemUtilsTest extends AbstractTest {
 
     @Test
     public void testCreateFolder() {
